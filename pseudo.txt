@@ -1,0 +1,43 @@
+Landing page
+- Birding Snaps title
+- button that says "Enter Site"
+- carousel of 5 pictures
+
+Navbar
+- Birding Snaps title to the left
+- button to saying "Login" that brings up a modal when clicked
+- button saying "Favorites" that takes the user to their favorite pictures
+
+Login Modal
+- offers authentication methods
+- this will be needed for users who want to save pictures under their favorites section
+
+Side Bar
+- top includes a search bar for filtering through the names of birds
+- below will be the letters of the alphabet
+    - clicking on a letter brings the user to a page listing all the birds that start with that letter
+- if I do not have a bird that starts with a letter, the letter will not appear
+
+Results Page
+- will contain an image and the name of the bird beside it
+- clicking on the image or name will bring the user to that bird page
+
+Main page
+- have a center/left image of the bird
+- list the name, common locations, brief description to the right
+- include an image grid below the top section
+
+Chat Box
+- use Firestore to create a chat section where users can reach out to me live
+- have a new room be created everytime a new user reaches out to me
+
+Bird Image
+- each image in the grid will have an icon to 'save to favorites' or 'download'
+- clicking on an image will expand it, with the same icons present
+- after expanding, have arrows allowing the user to click to cycle through images
+
+Footer
+- my name to the left and and links to social media in the center
+
+AI functionality
+- add AI changes to the favorited photos if the user wants to change it's look
