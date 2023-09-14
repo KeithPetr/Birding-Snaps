@@ -1,4 +1,7 @@
+
+/* eslint-disable react/prop-types */
 import {  } from 'react'
+import LandingPage from './components/LandingPage'
 
 
 function App() {
@@ -6,7 +9,7 @@ function App() {
 
   return (
     <div className="">
-      <h1 className="">App</h1>
+      <LandingPage />
     </div>
   )
 }
