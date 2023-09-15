@@ -1,17 +1,11 @@
-
 /* eslint-disable react/prop-types */
-import {  } from 'react'
-import LandingPage from './components/LandingPage'
+import {} from "react";
+import LandingPage from "./components/LandingPage";
 
-
-function App() {
-  
-
+export default function App() {
   return (
     <div className="">
       <LandingPage />
     </div>
-  )
+  );
 }
-
-export default App
