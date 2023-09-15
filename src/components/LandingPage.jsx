@@ -20,7 +20,7 @@ export default function LandingPage() {
             alt="birding snaps logo"
           />
         </div>
-        <Button className="mt-8 px-8 py-4 bg-blue-300 text-gray-50 text-lg">
+        <Button className="mt-8 px-8 py-4 bg-blue-300 text-gray-50 text-lg border-2 border-blue-100">
           Enter Site
         </Button>
       </div>
