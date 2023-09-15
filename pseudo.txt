@@ -3,7 +3,7 @@ Landing page
 - button that says "Enter Site"
 - carousel of 5 pictures
 
-Navbar
+Header
 - Birding Snaps title to the left
 - button to saying "Login" that brings up a modal when clicked
 - button saying "Favorites" that takes the user to their favorite pictures
@@ -41,3 +41,6 @@ Footer
 
 AI functionality
 - add AI changes to the favorited photos if the user wants to change it's look
+
+Responsive Design
+- add containers around the carousel and images to set up their aspect ratio
