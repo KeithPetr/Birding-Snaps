@@ -4,11 +4,11 @@ import LandingPage from "./components/LandingPage";
 import Home from "./components/Home";
 
 export default function App() {
-  const [enter, setEnter] = useState(true)
+  const [enter, setEnter] = useState(false)
 
   return (
-    <div className="">
-      {!enter ? <LandingPage /> : <Home setEnter={setEnter} />}
-    </div>
+    <>
+      {!enter ? <LandingPage setEnter={setEnter}/> : <Home setEnter={setEnter} />}
+    </>
   );
 }
