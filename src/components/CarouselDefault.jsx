@@ -10,7 +10,6 @@ export default function CarouselDefault() {
 
   return (
     <Carousel
-      className="w-3/4 h-1/3 mt-6 z-10 border-gray-100 border-2 shadow-md shadow-gray-400"
       transition={{ duration: 1 }}
       autoplay={true}
       autoplayDelay={3000}
