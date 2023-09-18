@@ -7,7 +7,7 @@ const letters =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M
 const letterBoxes = letters.map(letter => <LetterBox key={letter} letter={letter}/>)
 
   return (
-      <div className="bg-blue-800 w-4/12 flex flex-col items-center pt-4 pb-48 opacity-80">
+      <div className="bg-blue-800 w-4/12 flex flex-col items-center pt-4 pb-4 opacity-80">
         <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 mr-2">Search</Button>
         <div className="flex flex-wrap justify-center mt-4 gap-x-2 gap-y-2">
           {letterBoxes}
