@@ -1,12 +1,21 @@
 /* eslint-disable react/prop-types */
 import { Carousel } from "@material-tailwind/react";
-import Grosbeak from "../assets/rose-breasted-grosbeak.jpg";
+import Grosbeak from "../assets/grosbeak.jpg";
 import Warbler from "../assets/yellow-rumped-warbler.jpg";
-import Veery from "../assets/Veery.jpg";
+import Veery from "../assets/veery.jpg";
+import Blackbird from "../photos/Blackbird.jpg";
+import Bluebird from "../photos/Bluebird.jpg";
+import Cowbird from "../photos/Cowbird.jpg";
+import WinterWren from "../photos/WinterWren.jpg";
+import YellowWarbler from "../photos/YellowWarbler.jpg";
 
-export default function CarouselDefault() {
-  const imageUrls = [Grosbeak, Warbler, Veery];
+
+export default function CarouselDefault({enter}) {
+  const landingImages = [Grosbeak, Warbler, Veery]
+  const todaysImages = [Bluebird, Blackbird, Cowbird, WinterWren, YellowWarbler]
   const EmptyComponent = () => null;
+  const display = enter ? todaysImages : landingImages
+  console.log("display", display)
 
   return (
     <Carousel
@@ -17,12 +26,12 @@ export default function CarouselDefault() {
       prevArrow={() => <EmptyComponent />} // Hide previous arrow
       nextArrow={() => <EmptyComponent />} // Hide next arrow
     >
-      {imageUrls.map((imageUrl, index) => {
+      {display.map((image, index) => {
         return (
           <img
             key={index}
             alt="birdingsnaps logo"
-            src={imageUrl}
+            src={image}
             className="h-full w-full object-cover"
           />
         );

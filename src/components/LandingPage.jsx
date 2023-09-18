@@ -3,7 +3,7 @@ import Logo from "../assets/logo.jpg";
 import { Button } from "@material-tailwind/react";
 import CarouselDefault from "./CarouselDefault";
 
-export default function LandingPage({setEnter}) {
+export default function LandingPage({setEnter, enter}) {
   function toggleSite() {
     setEnter(prev => !prev)
   }
@@ -29,7 +29,7 @@ export default function LandingPage({setEnter}) {
         </Button>
       </div>
       <div className="w-3/4 h-1/3 mt-6 border-gray-100 border-2 shadow-md shadow-gray-400">
-        <CarouselDefault />
+        <CarouselDefault enter={enter}/>
       </div>
     </div>
   );

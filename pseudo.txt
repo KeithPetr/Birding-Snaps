@@ -26,6 +26,7 @@ Main page
 - have a center/left image of the bird
 - list the name, common locations, brief description to the right
 - include an image grid below the top section
+- use pagination for bird galleries with more than 9 photos
 
 Chat Box
 - use Firestore to create a chat section where users can reach out to me live
