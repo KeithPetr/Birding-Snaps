@@ -15,7 +15,6 @@ export default function CarouselDefault({enter}) {
   const todaysImages = [Bluebird, Blackbird, Cowbird, WinterWren, YellowWarbler]
   const EmptyComponent = () => null;
   const display = enter ? todaysImages : landingImages
-  console.log("display", display)
 
   return (
     <Carousel
