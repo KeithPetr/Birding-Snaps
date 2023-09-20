@@ -45,3 +45,5 @@ AI functionality
 
 Responsive Design
 - add containers around the carousel and images to set up their aspect ratio
+
+Add Context Component to pass matching images to

@@ -1,53 +1,33 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import {
-  getStorage,
-  ref,
-  listAll,
-  getDownloadURL,
-} from "firebase/storage";
-import app from "../../firebase.config.js";
+import { getDownloadURL} from "firebase/storage";
 
-export default function PhotoDisplay() {
+export default function PhotoDisplay({matchingImages}) {
   const [imageUrls, setImageUrls] = useState([]);
-  const storage = getStorage(app); // 'app' is the Firebase app instance you initialized
-
-  // -------------- Delete File ----------------------------------
-  // Create a reference to the file to delete
-//   const desertRef = ref(storage, "todaysFavorites");
-//   // Delete the file
-//   deleteObject(desertRef)
-//     .then(() => {
-//       console.log("file deleted successfully");
-//     })
-//     .catch((error) => {
-//       // Uh-oh, an error occurred!
-//       console.error("Error occurred: ", error);
-//     });
-  // -------------------------------------------------------------
+  console.log("matching images", matchingImages.items);
 
   useEffect(() => {
-    // Initialize Firebase Storage
-
-    // Create a reference to the storage bucket
-    const storageRef = ref(storage, "images"); // "images" is the path to your images in Storage
-
-    // List all items (images) in the storage bucket
-    listAll(storageRef)
-      .then((result) => {
-        // Get the download URL for each image and store them in state
-        console.log("result", result);
-        const promises = result.items.map((item) => getDownloadURL(item));
-        return Promise.all(promises);
-      })
-      .then((urls) => {
-        // Set the image URLs in state
-        console.log("urls", urls);
+    const fetchImageUrls = async () => {
+      try {
+        // Map over the items in matchingImages to get the download URLs
+        const urls = await Promise.all(
+          matchingImages.items.map(async (item) => {
+            const url = await getDownloadURL(item);
+            return url;
+          })
+        );
         setImageUrls(urls);
-      })
-      .catch((error) => {
-        console.error("Error fetching images:", error);
-      });
-  }, []);
+        console.log("image urls", imageUrls);
+      } catch (error) {
+        console.error("Error fetching image URLs:", error);
+      }
+    };
+
+    // Call the function to fetch image URLs
+    if (matchingImages && matchingImages.items) {
+      fetchImageUrls();
+    }
+  }, [matchingImages]);
 
   const photoElements = imageUrls.map((url, index) => {
     return (
