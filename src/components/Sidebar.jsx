@@ -1,14 +1,23 @@
 /* eslint-disable react/prop-types */
+import { useState } from 'react';
 import LetterBox from './LetterBox';
+import SearchModal from './SearchModal';
 import { Button } from "@material-tailwind/react";
 
-export default function Sidebar() {
-const letters =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-const letterBoxes = letters.map(letter => <LetterBox key={letter} letter={letter}/>)
+export default function Sidebar({matchingImages, setMatchingImages}) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const letters =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+  const letterBoxes = letters.map(letter => <LetterBox key={letter} letter={letter}/>)
+
+const handleSearchClick = () => {
+  setIsModalVisible(prev => !prev);
+  console.log("modal visisble", isModalVisible)
+};
 
   return (
       <div className="bg-blue-800 w-4/12 flex flex-col items-center pt-4 pb-4 opacity-80">
-        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 mr-2">Search</Button>
+        <SearchModal isModalVisible={isModalVisible} matchingImages={matchingImages} setMatchingImages={setMatchingImages}/>
+        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 mx-auto" onClick={handleSearchClick}>Search</Button>
         <div className="flex flex-wrap justify-center mt-4 gap-x-2 gap-y-2">
           {letterBoxes}
         </div>

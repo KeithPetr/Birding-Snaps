@@ -14,7 +14,8 @@ async function retrieveMetadata() {
     metadata.name = "Eastern Bluebird"
     metadata.id = nanoid()
     console.log("Modified Metadata:", metadata);
-    return updateMetadata(fileRef, metadata);
+    const updatedMetadata = await updateMetadata(fileRef, metadata);
+    return updatedMetadata
   } catch (error) {
     console.error("Error fetching metadata:", error);
     throw error; // You can choose to rethrow the error or handle it as needed
