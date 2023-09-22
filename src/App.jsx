@@ -4,7 +4,7 @@ import LandingPage from "./components/LandingPage";
 import Home from "./components/Home";
 
 export default function App() {
-  const [enter, setEnter] = useState(false);
+  const [enter, setEnter] = useState(true);
   const [matchingImages, setMatchingImages] = useState([])
 
   return (
