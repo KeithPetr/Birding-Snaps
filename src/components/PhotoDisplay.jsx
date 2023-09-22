@@ -31,7 +31,7 @@ export default function PhotoDisplay({matchingImages}) {
 
   const photoElements = imageUrls.map((url, index) => {
     return (
-      <div key={index} className="w-24 h-24 border">
+      <div key={index} className="w-24 h-24 border hover:border-blue-500 hover:border-2 cursor-pointer transition-transform hover:scale-105">
         <img className="h-full w-full" src={url} alt={`Image ${index}`} />
       </div>
     );

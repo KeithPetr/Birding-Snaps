@@ -16,17 +16,19 @@ export default function SearchModal({
   const storage = getStorage(app);
 
   async function filterResults(query) {
-    console.log("query", query)
+    console.log("query", query);
     const storageRef = ref(storage, "");
     try {
       const result = await listAll(storageRef);
       console.log("result", result);
-      const matchingBirds = result.prefixes.filter((item) => item.fullPath.toLowerCase().includes(query.toLowerCase()));
+      const matchingBirds = result.prefixes.filter((item) =>
+        item.fullPath.toLowerCase().includes(query.toLowerCase())
+      );
       console.log("Matching bird names: ", matchingBirds);
       const birdNames = matchingBirds.map((bird) => bird.fullPath);
-      console.log("birdNames: ", birdNames)
+      console.log("birdNames: ", birdNames);
       setFilteredBirds(birdNames);
-      setIsLoading(false); 
+      setIsLoading(false);
       console.log("filtered birds: ", filteredBirds);
     } catch (error) {
       console.error("Error filtering results: ", error);
@@ -49,7 +51,11 @@ export default function SearchModal({
 
   useEffect(() => {
     // Call filterResults with the updated searchTerms
-    filterResults(searchTerms);
+    if (searchTerms) {
+      filterResults(searchTerms);
+    } else {
+      setFilteredBirds([]);
+    }
   }, [searchTerms]);
 
   function handleInput(event) {
@@ -67,6 +73,15 @@ export default function SearchModal({
   function closePopUp() {
     setIsModalVisible(false);
     setSearchTerms("");
+  }
+
+  function enterSearchTerms(name) {
+    setSearchTerms(name);
+    setTimeout(function () {
+      searchImagesByName(name);
+      setIsModalVisible(false);
+      setSearchTerms("");
+    }, 1000);
   }
 
   const hiddenVal = isModalVisible ? "" : "hidden";
@@ -100,7 +115,13 @@ export default function SearchModal({
         ) : (
           <div>
             {filteredBirds.map((bird, index) => (
-              <div key={index}>{bird}</div>
+              <div
+                key={index}
+                className="bg-blue-800 hover:bg-blue-500 px-2 py-1 cursor-pointer"
+                onClick={() => enterSearchTerms(bird)}
+              >
+                {bird}
+              </div>
             ))}
           </div>
         )}
