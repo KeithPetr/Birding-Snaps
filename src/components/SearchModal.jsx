@@ -1,35 +1,47 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { getStorage, ref, listAll } from "firebase/storage";
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import app from "../../firebase.config.js";
 
 export default function SearchModal({
   isModalVisible,
   setIsModalVisible,
-  matchingImages,
   setMatchingImages,
 }) {
   const [searchTerms, setSearchTerms] = useState("");
   const [filteredBirds, setFilteredBirds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedBirdImage, setSelectedBirdImage] = useState(null);
 
   const storage = getStorage(app);
 
   async function filterResults(query) {
-    console.log("query", query);
     const storageRef = ref(storage, "");
     try {
       const result = await listAll(storageRef);
-      console.log("result", result);
+      console.log("result: ", result)
       const matchingBirds = result.prefixes.filter((item) =>
         item.fullPath.toLowerCase().includes(query.toLowerCase())
       );
-      console.log("Matching bird names: ", matchingBirds);
+      console.log("matchingBirds:, ", matchingBirds)
       const birdNames = matchingBirds.map((bird) => bird.fullPath);
-      console.log("birdNames: ", birdNames);
+      console.log("birdnames: ", birdNames)
+  
+      // Fetch and store the first image URL for each bird name
+      const firstImageUrls = {};
+      for (const birdName of birdNames) {
+        const birdImageRef = ref(storage, birdName);
+        const birdImage = await listAll(birdImageRef);
+        if (birdImage && birdImage.items.length > 0) {
+          const imageUrl = await getDownloadURL(birdImage.items[0]);
+          firstImageUrls[birdName] = imageUrl;
+        }
+      }
+      console.log(firstImageUrls)
+  
+      setSelectedBirdImage(firstImageUrls);
       setFilteredBirds(birdNames);
       setIsLoading(false);
-      console.log("filtered birds: ", filteredBirds);
     } catch (error) {
       console.error("Error filtering results: ", error);
     }
@@ -38,11 +50,11 @@ export default function SearchModal({
   // Function to search for images by name
   async function searchImagesByName(query) {
     const storageRef = ref(storage, `${query}`); // Set the path to your images
+    console.log("storageRef: ", storageRef);
 
     try {
       const result = await listAll(storageRef);
       setMatchingImages(result);
-      console.log("matching images: ", matchingImages);
     } catch (error) {
       console.error("Error searching for images:", error);
       return [];
@@ -81,7 +93,7 @@ export default function SearchModal({
       searchImagesByName(name);
       setIsModalVisible(false);
       setSearchTerms("");
-    }, 1000);
+    }, 500);
   }
 
   const hiddenVal = isModalVisible ? "" : "hidden";
@@ -93,7 +105,7 @@ export default function SearchModal({
       )}
 
       <div
-        className={`w-11/12 h-64 mb-2 px-4 bg-blue-300 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2  ${hiddenVal}`}
+        className={`w-11/12 h-64 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2  ${hiddenVal}`}
       >
         <div className="flex justify-end pr-1">
           <div
@@ -114,15 +126,22 @@ export default function SearchModal({
           <div>Loading...</div>
         ) : (
           <div>
-            {filteredBirds.map((bird, index) => (
-              <div
-                key={index}
-                className="bg-blue-800 hover:bg-blue-500 px-2 py-1 cursor-pointer"
+            {filteredBirds.map((bird, index) => {
+              console.log("bird: ", bird);
+              return (
+                <div key={index} 
+                className="flex items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 cursor-pointer border-b"
                 onClick={() => enterSearchTerms(bird)}
-              >
-                {bird}
-              </div>
-            ))}
+                >
+                  <img className="w-24 h-20"src={selectedBirdImage[bird]}/>
+                  <div
+                    className="ml-4"
+                  >
+                    {bird}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
