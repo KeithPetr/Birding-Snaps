@@ -5,13 +5,10 @@ import Header from "./Header";
 import SideBar from "./SideBar";
 import SearchModal from "./SearchModal";
 
-export default function Home({
-  setEnter,
-  enter,
-  matchingImages,
-  setMatchingImages,
-}) {
+export default function Home({ setEnter, enter }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [matchingImages, setMatchingImages] = useState([]);
 
   return (
     <>
@@ -27,6 +24,8 @@ export default function Home({
             enter={enter}
             matchingImages={matchingImages}
             setMatchingImages={setMatchingImages}
+            imageUrls={imageUrls}
+            setImageUrls={setImageUrls}
           />
         </div>
         <SearchModal
@@ -34,6 +33,7 @@ export default function Home({
           setIsModalVisible={setIsModalVisible}
           matchingImages={matchingImages}
           setMatchingImages={setMatchingImages}
+          imageUrls={imageUrls}
         />
       </div>
     </>

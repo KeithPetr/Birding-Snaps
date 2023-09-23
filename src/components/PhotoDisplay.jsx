@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { getDownloadURL} from "firebase/storage";
 
-export default function PhotoDisplay({matchingImages}) {
-  const [imageUrls, setImageUrls] = useState([]);
-  console.log("matching images", matchingImages.items);
+export default function PhotoDisplay({matchingImages, imageUrls, setImageUrls,}) {
 
   useEffect(() => {
     const fetchImageUrls = async () => {
