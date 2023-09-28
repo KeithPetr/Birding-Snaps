@@ -6,7 +6,6 @@ import SideBar from "./SideBar";
 import SearchModal from "./SearchModal";
 
 export default function Home({ setEnter, enter }) {
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageUrls, setImageUrls] = useState([]);
   const [matchingImages, setMatchingImages] = useState([]);
 
@@ -18,7 +17,6 @@ export default function Home({ setEnter, enter }) {
           <SideBar
             matchingImages={matchingImages}
             setMatchingImages={setMatchingImages}
-            setIsModalVisible={setIsModalVisible}
           />
           <Gallery
             enter={enter}
@@ -29,8 +27,6 @@ export default function Home({ setEnter, enter }) {
           />
         </div>
         <SearchModal
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
           matchingImages={matchingImages}
           setMatchingImages={setMatchingImages}
           imageUrls={imageUrls}
