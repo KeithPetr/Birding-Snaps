@@ -1,17 +1,24 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import app from "../../firebase.config.js";
+import { BirdContext } from "../BirdContext";
 
-export default function SearchModal({
-  isModalVisible,
-  setIsModalVisible,
-  setMatchingImages,
-}) {
-  const [searchTerms, setSearchTerms] = useState("");
-  const [filteredBirds, setFilteredBirds] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedBirdImage, setSelectedBirdImage] = useState(null);
+export default function SearchModal({ setMatchingImages }) {
+  const value = useContext(BirdContext);
+  const {
+    isModalVisible,
+    setIsModalVisible,
+    searchTerms,
+    setSearchTerms,
+    filteredBirds,
+    setFilteredBirds,
+    isLoading,
+    setIsLoading,
+    selectedBirdImage,
+    setSelectedBirdImage,
+    setGetLetterResults,
+  } = value;
 
   const storage = getStorage(app);
 
@@ -19,14 +26,14 @@ export default function SearchModal({
     const storageRef = ref(storage, "");
     try {
       const result = await listAll(storageRef);
-      console.log("result: ", result)
+      console.log("result: ", result);
       const matchingBirds = result.prefixes.filter((item) =>
         item.fullPath.toLowerCase().includes(query.toLowerCase())
       );
-      console.log("matchingBirds:, ", matchingBirds)
+      console.log("matchingBirds:, ", matchingBirds);
       const birdNames = matchingBirds.map((bird) => bird.fullPath);
-      console.log("birdnames: ", birdNames)
-  
+      console.log("birdnames: ", birdNames);
+
       // Fetch and store the first image URL for each bird name
       const firstImageUrls = {};
       for (const birdName of birdNames) {
@@ -37,8 +44,8 @@ export default function SearchModal({
           firstImageUrls[birdName] = imageUrl;
         }
       }
-      console.log(firstImageUrls)
-  
+      console.log(firstImageUrls);
+
       setSelectedBirdImage(firstImageUrls);
       setFilteredBirds(birdNames);
       setIsLoading(false);
@@ -79,6 +86,7 @@ export default function SearchModal({
       searchImagesByName(searchTerms);
       setIsModalVisible(false);
       setSearchTerms("");
+      setGetLetterResults(false)
     }
   }
 
@@ -88,6 +96,7 @@ export default function SearchModal({
   }
 
   function enterSearchTerms(name) {
+    setGetLetterResults(false)
     setSearchTerms(name);
     setTimeout(function () {
       searchImagesByName(name);
@@ -129,16 +138,13 @@ export default function SearchModal({
             {filteredBirds.map((bird, index) => {
               console.log("bird: ", bird);
               return (
-                <div key={index} 
-                className="flex items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 cursor-pointer border-b"
-                onClick={() => enterSearchTerms(bird)}
+                <div
+                  key={index}
+                  className="flex items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 cursor-pointer border-b"
+                  onClick={() => enterSearchTerms(bird)}
                 >
-                  <img className="w-24 h-20"src={selectedBirdImage[bird]}/>
-                  <div
-                    className="ml-4"
-                  >
-                    {bird}
-                  </div>
+                  <img className="w-24 h-20" src={selectedBirdImage[bird]} />
+                  <div className="ml-4">{bird}</div>
                 </div>
               );
             })}
