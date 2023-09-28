@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import app from "../../firebase.config.js";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { BirdContext } from "../BirdContext.jsx";
 
 export default function LetterBox({ letter }) {
   const storage = getStorage(app);
   const value = useContext(BirdContext);
-  const { firstImageUrls, setFirstImageUrls, setGetLetterResults } = value;
+  const { setFirstImageUrls, setGetLetterResults } = value;
 
   async function filterResults(letter) {
     const storageRef = ref(storage, "");
@@ -37,10 +37,6 @@ export default function LetterBox({ letter }) {
       console.error("Error filtering results: ", error);
     }
   }
-
-  useEffect(() => {
-    console.log("firstImagesUrls: ", firstImageUrls);
-  }, [firstImageUrls]);
 
   return (
     <div

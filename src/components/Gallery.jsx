@@ -14,7 +14,6 @@ export default function Gallery({
 }) {
   const value = useContext(BirdContext);
   const { getLetterResults } = value;
-  console.log("Gallery: ", matchingImages);
 
   return (
     <div className="bg-gray-900 w-3/4">
