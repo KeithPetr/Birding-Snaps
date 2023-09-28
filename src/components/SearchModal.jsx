@@ -4,7 +4,7 @@ import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import app from "../../firebase.config.js";
 import { BirdContext } from "../BirdContext";
 
-export default function SearchModal({ setMatchingImages }) {
+export default function SearchModal() {
   const value = useContext(BirdContext);
   const {
     isModalVisible,
@@ -18,6 +18,7 @@ export default function SearchModal({ setMatchingImages }) {
     selectedBirdImage,
     setSelectedBirdImage,
     setGetLetterResults,
+    setMatchingImages
   } = value;
 
   const storage = getStorage(app);
