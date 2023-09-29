@@ -15,7 +15,7 @@ export default function GalleryDetails({ enter }) {
       </h1>
       <div className="aspect-w-16 aspect-h-9 max-w-md mt-2 border-gray-100 border-2 shadow-md shadow-gray-400">
         {displayBirdDetails ? (
-          <img src={imageUrls[0]} />
+          <img src={imageUrls[0]?.url} />
         ) : (
           <CarouselDefault enter={enter} />
         )}

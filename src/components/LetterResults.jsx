@@ -17,6 +17,7 @@ export default function LetterResults() {
   const entries = Object.entries(firstImageUrls);
   const firstLetter = entries[0]?.[0].charAt(0);
   const storage = getStorage(app);
+  console.log("entries: ", entries);
   console.log("loading: ", isLoading);
 
   async function searchImagesByName(query) {

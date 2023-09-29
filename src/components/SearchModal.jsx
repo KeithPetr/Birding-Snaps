@@ -19,7 +19,8 @@ export default function SearchModal() {
     setSelectedBirdImage,
     setGetLetterResults,
     setMatchingImages,
-    setSelectedBirdName
+    setSelectedBirdName,
+    setDisplayBirdDetails
   } = value;
 
   const storage = getStorage(app);
@@ -101,6 +102,7 @@ export default function SearchModal() {
   function enterSearchTerms(name) {
     setGetLetterResults(false)
     setSearchTerms(name);
+    setDisplayBirdDetails(true)
     setTimeout(function () {
       searchImagesByName(name);
       setSelectedBirdName(name);
@@ -118,7 +120,7 @@ export default function SearchModal() {
       )}
 
       <div
-        className={`w-11/12 h-64 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2  ${hiddenVal}`}
+        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[300px] ${hiddenVal}`}
       >
         <div className="flex justify-end pr-1">
           <div
