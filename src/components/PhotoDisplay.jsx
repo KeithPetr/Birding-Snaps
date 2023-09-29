@@ -11,7 +11,11 @@ export default function PhotoDisplay() {
     setImageUrls,
     isLoading,
     setIsLoading,
+    setShowBirdGallery,
+    setClickedImageUrl,
   } = value;
+  
+  console.log(matchingImages)
 
   useEffect(() => {
     const fetchImageUrls = async () => {
@@ -21,7 +25,7 @@ export default function PhotoDisplay() {
         const urls = await Promise.all(
           matchingImages.items.map(async (item) => {
             const url = await getDownloadURL(item);
-            return url;
+            return {url, fullPath: item.fullPath};
           })
         );
         setImageUrls(urls);
@@ -38,19 +42,37 @@ export default function PhotoDisplay() {
     }
   }, [matchingImages, setIsLoading, setImageUrls]);
 
-  const photoElements = imageUrls.map((url, index) => {
+  const photoElements = imageUrls.map((urlInfo, index) => {
+    const {url, fullPath} = urlInfo;
     return (
       <div
         key={index}
         className="w-24 h-24 border hover:border-blue-500 hover:border-2 cursor-pointer transition-transform hover:scale-105"
       >
-        <img className="h-full w-full" src={url} alt={`Image ${index}`} />
+        <img 
+        className="h-full w-full" 
+        src={url} 
+        id={fullPath}
+        onClick={() => handleImageClick(url)}
+        />
       </div>
     );
   });
 
+  function toggleBirdGallery() {
+    setShowBirdGallery(true)
+  }
+
+  function handleImageClick(imageUrl) {
+    setClickedImageUrl(imageUrl)
+    console.log("Clicked image URL:", imageUrl);
+  }
+
   return (
-    <div className="flex flex-wrap gap-x-2 gap-y-2 pb-4 justify-center">
+    <div 
+    className="flex flex-wrap gap-x-2 gap-y-2 pb-4 justify-center"
+    onClick={toggleBirdGallery}
+    >
       {isLoading ? <p>Loading...</p> : photoElements}
     </div>
   );

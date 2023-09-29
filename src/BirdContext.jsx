@@ -17,6 +17,8 @@ export default function BirdProvider({ children }) {
   const [matchingImages, setMatchingImages] = useState([]);
   const [displayBirdDetails, setDisplayBirdDetails] = useState(false)
   const [selectedBirdName, setSelectedBirdName] = useState("");
+  const [showBirdGallery, setShowBirdGallery] = useState(false)
+  const [clickedImageUrl, setClickedImageUrl] = useState(null);
 
   return (
     <BirdContext.Provider
@@ -42,7 +44,11 @@ export default function BirdProvider({ children }) {
         displayBirdDetails,
         setDisplayBirdDetails,
         selectedBirdName,
-        setSelectedBirdName
+        setSelectedBirdName,
+        showBirdGallery,
+        setShowBirdGallery,
+        clickedImageUrl,
+        setClickedImageUrl,
       }}
     >
       {children}
