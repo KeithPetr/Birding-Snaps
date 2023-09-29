@@ -1,33 +1,23 @@
 /* eslint-disable react/prop-types */
+import { useContext } from "react";
+import { BirdContext } from "../BirdContext";
 import GalleryDetails from "./GalleryDetails";
 import PhotoDisplay from "./PhotoDisplay";
 import LetterResults from "./LetterResults";
-import { BirdContext } from "../BirdContext";
-import { useContext } from "react";
 
-export default function Gallery({
-  enter,
-  matchingImages,
-  setMatchingImages,
-  imageUrls,
-  setImageUrls,
-}) {
+export default function Gallery({ enter }) {
   const value = useContext(BirdContext);
-  const { getLetterResults } = value;
+  const { getLetterResults, isLoading } = value;
+  console.log("loading: ", isLoading)
 
   return (
     <div className="bg-gray-900 w-3/4">
-      {getLetterResults ? (
+      { getLetterResults ? (
         <LetterResults />
       ) : (
         <>
           <GalleryDetails enter={enter} />
-          <PhotoDisplay
-            matchingImages={matchingImages}
-            setMatchingImages={setMatchingImages}
-            imageUrls={imageUrls}
-            setImageUrls={setImageUrls}
-          />
+          <PhotoDisplay />
         </>
       )}
     </div>

@@ -18,7 +18,8 @@ export default function SearchModal() {
     selectedBirdImage,
     setSelectedBirdImage,
     setGetLetterResults,
-    setMatchingImages
+    setMatchingImages,
+    setSelectedBirdName
   } = value;
 
   const storage = getStorage(app);
@@ -88,6 +89,7 @@ export default function SearchModal() {
       setIsModalVisible(false);
       setSearchTerms("");
       setGetLetterResults(false)
+      setSelectedBirdName(searchTerms);
     }
   }
 
@@ -101,6 +103,7 @@ export default function SearchModal() {
     setSearchTerms(name);
     setTimeout(function () {
       searchImagesByName(name);
+      setSelectedBirdName(name);
       setIsModalVisible(false);
       setSearchTerms("");
     }, 500);

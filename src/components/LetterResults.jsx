@@ -5,29 +5,38 @@ import app from "../../firebase.config.js";
 
 export default function LetterResults() {
   const value = useContext(BirdContext);
-  const { firstImageUrls, setGetLetterResults, setMatchingImages, isLoading, setIsLoading } = value;
+  const {
+    firstImageUrls,
+    setGetLetterResults,
+    setMatchingImages,
+    isLoading,
+    setIsLoading,
+    setDisplayBirdDetails,
+    setSelectedBirdName
+  } = value;
   const entries = Object.entries(firstImageUrls);
-  const firstLetter = entries[0]?.[0].charAt(0)
+  const firstLetter = entries[0]?.[0].charAt(0);
   const storage = getStorage(app);
-  console.log("entries: ", entries);
+  console.log("loading: ", isLoading);
 
   async function searchImagesByName(query) {
-    setIsLoading(true)
+    setIsLoading(true);
     const storageRef = ref(storage, `${query}`); // Set the path to your images
     console.log("storageRef: ", storageRef);
 
     try {
       const result = await listAll(storageRef);
       setMatchingImages(result);
-      setIsLoading(false)
+      setDisplayBirdDetails(true);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error searching for images:", error);
-      setIsLoading(false)
+      setIsLoading(false);
       return [];
     }
-}
+  }
 
-return (
+  return (
     <>
       <h1 className="text-6xl text-center my-2 text-blue-100">{firstLetter}</h1>
       {isLoading ? (
@@ -41,6 +50,7 @@ return (
               onClick={() => {
                 setGetLetterResults(false);
                 searchImagesByName(key);
+                setSelectedBirdName(key);
               }}
             >
               <img className="w-24 h-20" src={value} />
