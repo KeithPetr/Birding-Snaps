@@ -29,20 +29,20 @@ export default function ZoomedImages() {
         className="fixed inset-0 bg-gray-900 opacity-50 z-20"
         onClick={() => setShowBirdGallery(false)}
       ></div>
-      <div className="w-[425px] h-[375px] border z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-        <img className="h-full w-full" src={imageUrls[currentIndex]?.url} />
+      <div className="w-11/12  z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+        <img className="h-full w-full border" src={imageUrls[currentIndex]?.url} />
         <div className="flex justify-between">
           <div
-            className="bg-gray-100 cursor-pointer border px-4 py-2 mt-2 w-1/6 text-center rounded-full"
+            className="cursor-pointer mt-2 text-4xl text-center"
             onClick={prevImage}
           >
-            Prev
+            ⬅️
           </div>
           <div
-            className="bg-gray-100 cursor-pointer border px-4 py-2 mt-2 w-1/6 text-center rounded-full"
+            className="cursor-pointer mt-2 text-4xl text-center"
             onClick={nextImage}
           >
-            Next
+            ➡️
           </div>
         </div>
       </div>

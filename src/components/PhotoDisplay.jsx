@@ -70,7 +70,7 @@ export default function PhotoDisplay() {
 
   return (
     <div 
-    className="flex flex-wrap gap-x-2 gap-y-2 pb-4 justify-center"
+    className="flex flex-wrap gap-x-2 gap-y-2 pb-4 px-2 justify-center"
     onClick={toggleBirdGallery}
     >
       {isLoading ? <p>Loading...</p> : photoElements}
