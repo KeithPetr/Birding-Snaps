@@ -10,7 +10,7 @@ export default function GalleryDetails({ enter }) {
 
   return (
     <div className="p-4 flex flex-col items-center">
-      <h1 className="text-blue-400 font-bold text-2xl">
+      <h1 className="text-blue-400 font-bold text-2xl text-center">
       {selectedBirdName ? selectedBirdName : "Today's Favorites"}
       </h1>
       <div className="aspect-w-16 aspect-h-9 max-w-md mt-2 border-gray-100 border-2 shadow-md shadow-gray-400">

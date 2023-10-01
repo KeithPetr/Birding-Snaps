@@ -16,8 +16,8 @@ export default function Header() {
         />
       </div>
       <div>
-        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 mr-2">Login</Button>
-        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100">Favorites</Button>
+        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100">Login</Button>
+        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 hidden">Favorites</Button>
       </div>
     </div>
   );
