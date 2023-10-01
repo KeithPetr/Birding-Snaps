@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Gallery from "./Gallery";
 import Header from "./Header";
-import Sidebar from "./SideBar";
+import Sidebar from "./Sidebar";
 import SearchModal from "./SearchModal";
 import { BirdContext } from "../BirdContext";
 import { useContext } from "react";

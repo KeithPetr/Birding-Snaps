@@ -4,7 +4,7 @@ import { Button } from "@material-tailwind/react";
 import { BirdContext } from '../BirdContext';
 import { useContext } from 'react';
 
-export default function Sidebar() {
+export default function SideBar() {
   const letters =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
   const letterBoxes = letters.map(letter => <LetterBox key={letter} letter={letter}/>)
   const value = useContext(BirdContext)
