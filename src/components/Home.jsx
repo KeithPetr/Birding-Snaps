@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Gallery from "./Gallery";
 import Header from "./Header";
-import SideBar from "./SideBar";
+import Sidebar from "./SideBar";
 import SearchModal from "./SearchModal";
 import { BirdContext } from "../BirdContext";
 import { useContext } from "react";
@@ -17,7 +17,7 @@ export default function Home({ setEnter, enter }) {
       {showBirdGallery && <ZoomedImages />}
       <>
         <div className="flex flex-grow">
-          <SideBar />
+          <Sidebar />
           <Gallery enter={enter} />
         </div>
         <SearchModal />
