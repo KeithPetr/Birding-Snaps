@@ -1,9 +1,10 @@
 import { BirdContext } from "../BirdContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faStar } from "@fortawesome/free-solid-svg-icons";
 
 export default function ZoomedImages() {
+  const imgRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0);
   const value = useContext(BirdContext);
   const { setShowBirdGallery, clickedImageUrl, imageUrls } = value;
@@ -17,6 +18,12 @@ export default function ZoomedImages() {
     );
     setCurrentIndex(filteredIndex);
   }, [clickedImageUrl, imageUrls]);
+
+  useEffect(() => {
+    if (imgRef.current) {
+      imgRef.current.focus();
+    }
+  }, []);
 
   function prevImage() {
     const newIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
@@ -40,7 +47,7 @@ export default function ZoomedImages() {
           <img
             className="h-full w-full border"
             src={imageUrls[currentIndex]?.url}
-            autoFocus
+            ref={imgRef}
           />
           <div className="absolute text-xl top-[89%] left-[80%] flex gap-2">
             <FontAwesomeIcon 
