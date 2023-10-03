@@ -21,9 +21,9 @@ export default function ZoomedImages() {
 
   useEffect(() => {
     if (imgRef.current) {
-      imgRef.current.focus();
+      imgRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, []);
+  }, [clickedImageUrl, imageUrls]);
 
   function prevImage() {
     const newIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
