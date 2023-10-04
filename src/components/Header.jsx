@@ -1,8 +1,20 @@
 /* eslint-disable react/prop-types */
+import { useContext } from "react";
 import { Button } from "@material-tailwind/react";
 import Logo from "../assets/logo.jpg";
+import { BirdContext } from "../BirdContext";
+import { auth } from "../../firebase.config";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Header() {
+  const [user] = useAuthState(auth);
+
+  function signOut() {
+    auth.signOut();
+  }
+  const value = useContext(BirdContext);
+  const { setShowLoginModal } = value;
+
   return (
     <div className="flex h-24 justify-between items-center px-4 py-4 border-b bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-900 via-blue-500 to-blue-100">
       <div className="flex items-center">
@@ -16,8 +28,22 @@ export default function Header() {
         />
       </div>
       <div>
-        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100">Login</Button>
-        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 hidden">Favorites</Button>
+        {user ? <Button
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 p-2 cursor-pointer"
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
+        :
+        <Button
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 py-2 px-4 cursor-pointer"
+          onClick={() => setShowLoginModal(true)}
+        >
+          Login
+        </Button>}
+        <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 hidden">
+          Favorites
+        </Button>
       </div>
     </div>
   );

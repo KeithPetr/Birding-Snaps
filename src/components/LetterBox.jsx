@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import app from "../../firebase.config.js";
+import {app} from "../../firebase.config.js";
 import { useContext } from "react";
 import { BirdContext } from "../BirdContext.jsx";
 

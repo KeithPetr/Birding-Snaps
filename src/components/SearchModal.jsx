@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import app from "../../firebase.config.js";
+import { app } from "../../firebase.config.js";
 import { BirdContext } from "../BirdContext";
 
 export default function SearchModal() {
+  const searchInputRef = useRef(null);
   const value = useContext(BirdContext);
   const {
     isModalVisible,
@@ -20,7 +21,7 @@ export default function SearchModal() {
     setGetLetterResults,
     setMatchingImages,
     setSelectedBirdName,
-    setDisplayBirdDetails
+    setDisplayBirdDetails,
   } = value;
 
   const storage = getStorage(app);
@@ -80,16 +81,23 @@ export default function SearchModal() {
     }
   }, [searchTerms]);
 
+  useEffect(() => {
+    // Set focus on the search input after the search button is clicked
+    if (isModalVisible && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isModalVisible]);
+
   function handleInput(event) {
     setSearchTerms(event.target.value);
   }
 
   function handleKeyDown(event) {
     if (event.key === "Enter") {
-      searchImagesByName(searchTerms);
+      searchImagesByName(searchTerms.trim());
       setIsModalVisible(false);
       setSearchTerms("");
-      setGetLetterResults(false)
+      setGetLetterResults(false);
       setSelectedBirdName(searchTerms);
     }
   }
@@ -100,9 +108,9 @@ export default function SearchModal() {
   }
 
   function enterSearchTerms(name) {
-    setGetLetterResults(false)
+    setGetLetterResults(false);
     setSearchTerms(name);
-    setDisplayBirdDetails(true)
+    setDisplayBirdDetails(true);
     setTimeout(function () {
       searchImagesByName(name);
       setSelectedBirdName(name);
@@ -120,7 +128,7 @@ export default function SearchModal() {
       )}
 
       <div
-        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[300px] ${hiddenVal}`}
+        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[100px] ${hiddenVal}`}
       >
         <div className="flex justify-end pr-1">
           <div
@@ -136,6 +144,7 @@ export default function SearchModal() {
           value={searchTerms}
           onKeyDown={handleKeyDown}
           placeholder="Search..."
+          ref={searchInputRef}
         />
         {isLoading ? (
           <div>Loading...</div>

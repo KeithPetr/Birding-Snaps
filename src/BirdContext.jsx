@@ -19,10 +19,13 @@ export default function BirdProvider({ children }) {
   const [selectedBirdName, setSelectedBirdName] = useState("");
   const [showBirdGallery, setShowBirdGallery] = useState(false)
   const [clickedImageUrl, setClickedImageUrl] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   return (
     <BirdContext.Provider
       value={{
+        showLoginModal,
+        setShowLoginModal,
         isModalVisible,
         setIsModalVisible,
         searchTerms,

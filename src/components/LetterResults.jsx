@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { BirdContext } from "../BirdContext";
 import { getStorage, ref, listAll } from "firebase/storage";
-import app from "../../firebase.config.js";
+import {app} from "../../firebase.config.js";
 
 export default function LetterResults() {
   const value = useContext(BirdContext);
@@ -47,7 +47,7 @@ export default function LetterResults() {
           {entries.map(([key, value], index) => (
             <div
               key={index}
-              className="flex items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 mb-2 mx-2 cursor-pointer"
+              className="flex text-center items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 mb-2 mx-2 cursor-pointer"
               onClick={() => {
                 setGetLetterResults(false);
                 searchImagesByName(key);
@@ -55,7 +55,7 @@ export default function LetterResults() {
               }}
             >
               <img className="w-24 h-20" src={value} />
-              <div className="ml-4">{key}</div>
+              <div className="ml-2">{key}</div>
             </div>
           ))}
         </div>
