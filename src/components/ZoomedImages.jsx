@@ -75,7 +75,6 @@ export default function ZoomedImages() {
               <FontAwesomeIcon
                 icon={faDownload}
                 className="text-blue-500 bg-gray-100 cursor-pointer"
-                onClick={isSignedIn}
               />
             </a>
           </div>
