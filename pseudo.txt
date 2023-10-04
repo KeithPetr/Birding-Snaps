@@ -46,4 +46,6 @@ AI functionality
 Responsive Design
 - add containers around the carousel and images to set up their aspect ratio
 
-Add Context Component to pass matching images to
+- Add Context Component to pass matching images to the gallery
+
+- Consider adding watermarks to images that can be removed if the user is authorized
