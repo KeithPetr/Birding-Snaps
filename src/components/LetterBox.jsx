@@ -7,7 +7,7 @@ import { BirdContext } from "../BirdContext.jsx";
 export default function LetterBox({ letter }) {
   const storage = getStorage(app);
   const value = useContext(BirdContext);
-  const { setFirstImageUrls, setGetLetterResults } = value;
+  const { setFirstImageUrls, setGetLetterResults, setShowFavorites} = value;
 
   async function filterResults(letter) {
     const storageRef = ref(storage, "");
@@ -33,6 +33,7 @@ export default function LetterBox({ letter }) {
       }
       setFirstImageUrls(firstImages);
       setGetLetterResults(true)
+      setShowFavorites(false)
     } catch (error) {
       console.error("Error filtering results: ", error);
     }

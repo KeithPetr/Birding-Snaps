@@ -2,18 +2,32 @@ import { BirdContext } from "../BirdContext";
 import { useContext, useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faStar } from "@fortawesome/free-solid-svg-icons";
-import { auth } from "../../firebase.config";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { database } from "../../firebase.config";
 import { Button } from "@material-tailwind/react";
+import { ref, push, remove, get, child, set } from "firebase/database";
 
 export default function ZoomedImages() {
-  const [user] = useAuthState(auth);
+  const [isFavorited, setIsFavorited] = useState(false);
   const imgRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const value = useContext(BirdContext);
-  const { setShowBirdGallery, clickedImageUrl, imageUrls, setShowLoginModal } = value;
+  const {
+    setShowBirdGallery,
+    clickedImageUrl,
+    imageUrls,
+    setShowLoginModal,
+    imageFavorites,
+    user,
+  } = value;
+  const userUid = user ? user.uid : null;
+  const favDB = ref(database, `favorites/${userUid}`);
 
-  console.log("clickedImageUrl", imageUrls[currentIndex]?.url);
+  useEffect(() => {
+    if (user) {
+      setIsFavorited(imageFavorites.includes(imageUrls[currentIndex]?.url));
+      console.log("hasBeenFavorited", isFavorited);
+    }
+  }, [imageUrls[currentIndex]?.url]);
 
   useEffect(() => {
     // Update the current index when the clicked image URL changes
@@ -40,10 +54,50 @@ export default function ZoomedImages() {
     setCurrentIndex(newIndex);
   };
 
-  function isSignedIn() {
-    if (!user) {
-      setShowLoginModal(true); // Show the LoginModal when the user is not signed in
-      setShowBirdGallery(false)
+  async function toggleFavorite() {
+    if (user) {
+      const imageUrl = imageUrls[currentIndex]?.url;
+      const snapshot = await get(favDB);
+
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+
+        // Find the key associated with the image URL
+        const keyToDelete = Object.keys(data).find(
+          (key) => data[key] === imageUrl
+        );
+
+        if (keyToDelete) {
+          // If already favorited, remove from Firebase using the key
+          await remove(child(favDB, keyToDelete));
+          setIsFavorited(false); // Set the star icon to white
+        } else {
+          // If not favorited, add to Firebase
+          const newRef = push(favDB);
+          const newKey = newRef.key;
+          await set(child(favDB, newKey), imageUrl);
+          setIsFavorited(true); // Set the star icon to yellow
+        }
+      } else {
+        // If no favorites data exists, create a new entry
+        const newRef = push(favDB);
+        const newKey = newRef.key;
+        await set(child(favDB, newKey), imageUrl);
+        setIsFavorited(true); // Set the star icon to yellow
+      }
+    } else {
+      setShowLoginModal(true);
+      setShowBirdGallery(false);
+    }
+  }
+
+  function openImageInNewTab() {
+    const newTab = window.open(
+      `image.html?imageUrl=${encodeURIComponent(imageUrls[currentIndex]?.url)}`,
+      "_blank"
+    );
+    if (newTab) {
+      newTab.focus();
     }
   }
 
@@ -56,7 +110,7 @@ export default function ZoomedImages() {
       <div className="w-11/12 z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
         <div className="border relative">
           <img
-            className="h-full w-full border"
+            className="h-full w-full border select-none"
             src={imageUrls[currentIndex]?.url}
             ref={imgRef}
           />
@@ -64,14 +118,12 @@ export default function ZoomedImages() {
           <div className="absolute text-xl bottom-0 right-2 flex items-center gap-2">
             <FontAwesomeIcon
               icon={faStar}
-              className="text-yellow-600 cursor-pointer"
-              onClick={isSignedIn}
+              className={`cursor-pointer ${
+                isFavorited ? "text-yellow-500" : "text-white"
+              }`}
+              onClick={toggleFavorite}
             />
-            <a
-              href={imageUrls[currentIndex]?.url}
-              download="image.jpg"
-              target="blank_"
-            >
+            <a href="#" onClick={openImageInNewTab}>
               <FontAwesomeIcon
                 icon={faDownload}
                 className="text-blue-500 bg-gray-100 cursor-pointer"
@@ -87,10 +139,12 @@ export default function ZoomedImages() {
           >
             ⬅️
           </div>
-          <Button 
-          className="bg-blue-300 text-gray-50 border-2 border-blue-100 cursor-pointer py-2 px-2"
-          onClick={() => setShowBirdGallery(false)}
-          >Close</Button>
+          <Button
+            className="bg-blue-300 text-gray-50 border-2 border-blue-100 cursor-pointer py-2 px-2"
+            onClick={() => setShowBirdGallery(false)}
+          >
+            Close
+          </Button>
           <div
             className="cursor-pointer text-4xl text-center"
             onClick={nextImage}

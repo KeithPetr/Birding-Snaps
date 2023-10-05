@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Page</title>
+  </head>
+  <body>
+    <img
+      id="image"
+      alt="Your Image"
+      width="1024"
+      height="768"
+    />
+    <script>
+        // Retrieve the query parameter 'imageUrl'
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('imageUrl');
+
+        // Set the 'src' attribute of the image
+        const image = document.getElementById('image');
+        if (imageUrl) {
+            image.src = imageUrl;
+        }
+    </script>
+  </body>
+</html>

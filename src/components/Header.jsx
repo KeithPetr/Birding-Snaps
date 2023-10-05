@@ -4,16 +4,14 @@ import { Button } from "@material-tailwind/react";
 import Logo from "../assets/logo.jpg";
 import { BirdContext } from "../BirdContext";
 import { auth } from "../../firebase.config";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Header() {
-  const [user] = useAuthState(auth);
-
   function signOut() {
+    setShowFavorites(false)
     auth.signOut();
   }
   const value = useContext(BirdContext);
-  const { setShowLoginModal } = value;
+  const { setShowLoginModal, user, setShowFavorites } = value;
 
   return (
     <div className="flex h-24 justify-between items-center px-4 py-4 border-b bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-900 via-blue-500 to-blue-100">
