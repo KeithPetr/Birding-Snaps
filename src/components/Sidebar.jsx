@@ -22,10 +22,10 @@ const toggleFavorites = () => {
   return (
       <div className="bg-blue-600 w-4/12 flex flex-col items-center pt-4 pb-4">
         <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2" onClick={handleSearchClick}>Search</Button>
+        {user && <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2" onClick={toggleFavorites}>Favorites</Button>}
         <div className="flex flex-wrap justify-center mt-4 gap-x-2 gap-y-2">
           {letterBoxes}
         </div>
-        {user && <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-4" onClick={toggleFavorites}>Favorites</Button>}
       </div>
   );
 }
