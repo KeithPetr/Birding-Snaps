@@ -93,7 +93,7 @@ export default function ZoomedImages() {
 
   function openImageInNewTab() {
     const newTab = window.open(
-      `image.html?imageUrl=${encodeURIComponent(imageUrls[currentIndex]?.url)}`,
+      `/image.html?imageUrl=${encodeURIComponent(imageUrls[currentIndex]?.url)}`,
       "_blank"
     );
     if (newTab) {
