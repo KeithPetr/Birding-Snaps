@@ -92,15 +92,18 @@ export default function ZoomedImages() {
   }
 
   function openImageInNewTab() {
-  const imageUrl = encodeURIComponent(imageUrls[currentIndex]?.url);
-  const baseUrl = window.location.origin; // Get the current base URL
+    const imageUrl = encodeURIComponent(imageUrls[currentIndex]?.url);
+    const baseUrl = window.location.origin; // Get the current base URL
 
-  const newTab = window.open(`${baseUrl}/image.html?imageUrl=${imageUrl}`, "_blank");
+    const newTab = window.open(
+      `${baseUrl}/image.html?imageUrl=${imageUrl}`,
+      "_blank"
+    );
 
-  if (newTab) {
-    newTab.focus();
+    if (newTab) {
+      newTab.focus();
+    }
   }
-}
 
   return (
     <>
@@ -116,7 +119,7 @@ export default function ZoomedImages() {
             ref={imgRef}
           />
 
-          <div className="absolute text-xl bottom-0 right-2 flex items-center gap-2">
+          <div className="absolute text-xl bottom-2 right-2 flex items-center gap-2">
             <FontAwesomeIcon
               icon={faStar}
               className={`cursor-pointer ${
@@ -124,12 +127,12 @@ export default function ZoomedImages() {
               }`}
               onClick={toggleFavorite}
             />
-            <a href="#" onClick={openImageInNewTab}>
-              <FontAwesomeIcon
-                icon={faDownload}
-                className="text-blue-500 bg-gray-100 cursor-pointer"
-              />
-            </a>
+
+            <FontAwesomeIcon
+              icon={faDownload}
+              className="text-blue-500 bg-gray-100 cursor-pointer"
+              onClick={openImageInNewTab}
+            />
           </div>
         </div>
 
