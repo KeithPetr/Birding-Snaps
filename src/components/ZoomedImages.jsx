@@ -93,12 +93,8 @@ export default function ZoomedImages() {
 
   function openImageInNewTab() {
     const imageUrl = encodeURIComponent(imageUrls[currentIndex]?.url);
-    const baseUrl = window.location.origin; // Get the current base URL
 
-    const newTab = window.open(
-      `${baseUrl}/image.html?imageUrl=${imageUrl}`,
-      "_blank"
-    );
+    const newTab = window.open(`/image.html?imageUrl=${imageUrl}`, "_blank");
 
     if (newTab) {
       newTab.focus();
