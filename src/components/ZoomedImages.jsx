@@ -1,7 +1,7 @@
 import { BirdContext } from "../BirdContext";
 import { useContext, useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { database } from "../../firebase.config";
 import { Button } from "@material-tailwind/react";
 import { ref, push, remove, get, child, set } from "firebase/database";
@@ -91,16 +91,6 @@ export default function ZoomedImages() {
     }
   }
 
-  function openImageInNewTab() {
-    const imageUrl = encodeURIComponent(imageUrls[currentIndex]?.url);
-
-    const newTab = window.open(`/image.html?imageUrl=${imageUrl}`, "_blank");
-
-    if (newTab) {
-      newTab.focus();
-    }
-  }
-
   return (
     <>
       <div
@@ -123,16 +113,10 @@ export default function ZoomedImages() {
               }`}
               onClick={toggleFavorite}
             />
-
-            <FontAwesomeIcon
-              icon={faDownload}
-              className="text-blue-500 bg-gray-100 cursor-pointer"
-              onClick={openImageInNewTab}
-            />
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-1">
+        <div className="flex justify-between items-center mt-1 select-none">
           <div
             className="cursor-pointer text-4xl text-center"
             onClick={prevImage}
