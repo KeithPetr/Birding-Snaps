@@ -25,10 +25,19 @@ export default function BirdProvider({ children }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [imageFavorites, setImageFavorites] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [favCurrentIndex, setFavCurrentIndex] = useState(0);
 
   return (
     <BirdContext.Provider
       value={{
+        currentIndex,
+        setCurrentIndex,
+        favCurrentIndex,
+        setFavCurrentIndex,
+        isFavorited,
+        setIsFavorited,
         showFavorites,
         setShowFavorites,
         user,

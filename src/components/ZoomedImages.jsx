@@ -1,5 +1,5 @@
 import { BirdContext } from "../BirdContext";
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { database } from "../../firebase.config";
@@ -7,9 +7,7 @@ import { Button } from "@material-tailwind/react";
 import { ref, push, remove, get, child, set } from "firebase/database";
 
 export default function ZoomedImages() {
-  const [isFavorited, setIsFavorited] = useState(false);
   const imgRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const value = useContext(BirdContext);
   const {
     setShowBirdGallery,
@@ -18,16 +16,39 @@ export default function ZoomedImages() {
     setShowLoginModal,
     imageFavorites,
     user,
+    showFavorites,
+    isFavorited,
+    setIsFavorited,
+    currentIndex,
+    setCurrentIndex,
+    favCurrentIndex,
+    setFavCurrentIndex,
   } = value;
   const userUid = user ? user.uid : null;
   const favDB = ref(database, `favorites/${userUid}`);
 
   useEffect(() => {
-    if (user) {
-      setIsFavorited(imageFavorites.includes(imageUrls[currentIndex]?.url));
-      console.log("hasBeenFavorited", isFavorited);
+    if (!user) {
+      setIsFavorited(false);
     }
-  }, [imageUrls[currentIndex]?.url]);
+  }, [user, setIsFavorited]);
+
+  useEffect(() => {
+    if (user) {
+      setIsFavorited(
+        imageFavorites.includes(
+          imageUrls[currentIndex]?.url
+        )
+      );
+    }
+  }, [
+    imageUrls,
+    currentIndex,
+    setIsFavorited,
+    user,
+    imageFavorites,
+    favCurrentIndex,
+  ]);
 
   useEffect(() => {
     // Update the current index when the clicked image URL changes
@@ -38,25 +59,74 @@ export default function ZoomedImages() {
   }, [clickedImageUrl, imageUrls]);
 
   useEffect(() => {
+    const filteredIndex = imageFavorites.findIndex(
+      (image) => clickedImageUrl === image
+    );
+    setFavCurrentIndex(filteredIndex);
+  }, [clickedImageUrl, imageFavorites]);
+
+  useEffect(() => {
     if (imgRef.current) {
       imgRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [clickedImageUrl, imageUrls]);
 
   function prevImage() {
-    const newIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
-    setCurrentIndex(newIndex);
+    if (showFavorites) {
+      const newIndex =
+        (favCurrentIndex - 1 + imageFavorites.length) % imageFavorites.length;
+      setFavCurrentIndex(newIndex);
+    } else {
+      const newIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+      setCurrentIndex(newIndex);
+    }
   }
 
   const nextImage = () => {
-    // Increment the index and loop back to the first image if at the end
-    const newIndex = (currentIndex + 1) % imageUrls.length;
-    setCurrentIndex(newIndex);
+    if (showFavorites) {
+      const newIndex = (favCurrentIndex + 1) % imageFavorites.length;
+      setFavCurrentIndex(newIndex);
+    } else {
+      const newIndex = (currentIndex + 1) % imageUrls.length;
+      setCurrentIndex(newIndex);
+    }
   };
+
+  async function removeFavorite() {
+    if (showFavorites) {
+      if (user) {
+        const imageUrl = imageFavorites[favCurrentIndex];
+        const snapshot = await get(favDB);
+
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+
+          // Find the key associated with the image URL
+          const keyToDelete = Object.keys(data).find(
+            (key) => data[key] === imageUrl
+          );
+
+          if (keyToDelete) {
+            // If already favorited, remove from Firebase using the key
+            if (imageFavorites.length > 1) {
+              await remove(child(favDB, keyToDelete));
+              nextImage();
+            } else {
+              await remove(child(favDB, keyToDelete));
+              nextImage();
+              setShowBirdGallery(false);
+            }
+          }
+        }
+      }
+    }
+  }
+  console.log(imageFavorites.length);
 
   async function toggleFavorite() {
     if (user) {
-      const imageUrl = imageUrls[currentIndex]?.url;
+      const imageUrl =
+        imageUrls[currentIndex]?.url || imageFavorites[favCurrentIndex];
       const snapshot = await get(favDB);
 
       if (snapshot.exists()) {
@@ -70,20 +140,17 @@ export default function ZoomedImages() {
         if (keyToDelete) {
           // If already favorited, remove from Firebase using the key
           await remove(child(favDB, keyToDelete));
-          setIsFavorited(false); // Set the star icon to white
         } else {
           // If not favorited, add to Firebase
           const newRef = push(favDB);
           const newKey = newRef.key;
           await set(child(favDB, newKey), imageUrl);
-          setIsFavorited(true); // Set the star icon to yellow
         }
       } else {
         // If no favorites data exists, create a new entry
         const newRef = push(favDB);
         const newKey = newRef.key;
         await set(child(favDB, newKey), imageUrl);
-        setIsFavorited(true); // Set the star icon to yellow
       }
     } else {
       setShowLoginModal(true);
@@ -101,18 +168,27 @@ export default function ZoomedImages() {
         <div className="border relative">
           <img
             className="h-full w-full border select-none"
-            src={imageUrls[currentIndex]?.url}
+            src={
+              showFavorites
+                ? imageFavorites[favCurrentIndex]
+                : imageUrls[currentIndex]?.url
+            }
             ref={imgRef}
           />
 
-          <div className="absolute text-xl bottom-2 right-2 flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faStar}
-              className={`cursor-pointer ${
-                isFavorited ? "text-yellow-500" : "text-white"
-              }`}
-              onClick={toggleFavorite}
-            />
+          <div
+            className="absolute text-xl bottom-2 right-2 flex items-center gap-2 text-red-900 cursor-pointer"
+            onClick={removeFavorite}
+          >
+            {showFavorites ? (
+              "Remove"
+            ) : (
+              <FontAwesomeIcon
+                icon={faStar}
+                className={`${isFavorited ? "text-yellow-500" : "text-white"}`}
+                onClick={toggleFavorite}
+              />
+            )}
           </div>
         </div>
 

@@ -15,7 +15,6 @@ export default function PhotoDisplay() {
     setClickedImageUrl,
   } = value;
   
-  console.log(matchingImages)
 
   useEffect(() => {
     const fetchImageUrls = async () => {
@@ -65,7 +64,6 @@ export default function PhotoDisplay() {
 
   function handleImageClick(imageUrl) {
     setClickedImageUrl(imageUrl)
-    console.log("Clicked image URL:", imageUrl);
   }
 
   return (

@@ -23,7 +23,6 @@ export default function Gallery({ enter }) {
         const data = snapshot.val();
         const favoritesArray = data ? Object.values(data) : [];
         setImageFavorites(favoritesArray);
-        console.log("imageFavorites", favoritesArray);
       });
     }
   }, [userUid, setImageFavorites]);

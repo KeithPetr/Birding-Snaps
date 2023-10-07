@@ -30,13 +30,13 @@ export default function SearchModal() {
     const storageRef = ref(storage, "");
     try {
       const result = await listAll(storageRef);
-      console.log("result: ", result);
+      
       const matchingBirds = result.prefixes.filter((item) =>
         item.fullPath.toLowerCase().includes(query.toLowerCase())
       );
-      console.log("matchingBirds:, ", matchingBirds);
+     
       const birdNames = matchingBirds.map((bird) => bird.fullPath);
-      console.log("birdnames: ", birdNames);
+     
 
       // Fetch and store the first image URL for each bird name
       const firstImageUrls = {};
@@ -48,7 +48,7 @@ export default function SearchModal() {
           firstImageUrls[birdName] = imageUrl;
         }
       }
-      console.log(firstImageUrls);
+ 
 
       setSelectedBirdImage(firstImageUrls);
       setFilteredBirds(birdNames);
@@ -61,7 +61,7 @@ export default function SearchModal() {
   // Function to search for images by name
   async function searchImagesByName(query) {
     const storageRef = ref(storage, `${query}`); // Set the path to your images
-    console.log("storageRef: ", storageRef);
+    
 
     try {
       const result = await listAll(storageRef);
@@ -151,7 +151,7 @@ export default function SearchModal() {
         ) : (
           <div>
             {filteredBirds.map((bird, index) => {
-              console.log("bird: ", bird);
+              
               return (
                 <div
                   key={index}
