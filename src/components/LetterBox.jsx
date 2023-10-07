@@ -13,13 +13,13 @@ export default function LetterBox({ letter }) {
     const storageRef = ref(storage, "");
     try {
       const result = await listAll(storageRef);
-      console.log("result: ", result);
+      
       const matchingBirds = result.prefixes.filter(
         (item) => item.fullPath.charAt(0) === letter
       );
-      console.log("matchingBirds:, ", matchingBirds);
+      
       const birdNames = matchingBirds.map((bird) => bird.fullPath);
-      console.log("birdnames: ", birdNames);
+      
 
       // Fetch and store the first image URL for each bird name
       const firstImages = {};
