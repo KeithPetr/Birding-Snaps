@@ -35,11 +35,7 @@ export default function ZoomedImages() {
 
   useEffect(() => {
     if (user) {
-      setIsFavorited(
-        imageFavorites.includes(
-          imageUrls[currentIndex]?.url
-        )
-      );
+      setIsFavorited(imageFavorites.includes(imageUrls[currentIndex]?.url));
     }
   }, [
     imageUrls,
@@ -52,10 +48,12 @@ export default function ZoomedImages() {
 
   useEffect(() => {
     // Update the current index when the clicked image URL changes
-    const filteredIndex = imageUrls.findIndex(
-      (image) => clickedImageUrl === image.url
-    );
-    setCurrentIndex(filteredIndex);
+    if (!showFavorites) {
+      const filteredIndex = imageUrls.findIndex(
+        (image) => clickedImageUrl === image.url
+      );
+      setCurrentIndex(filteredIndex);
+    }
   }, [clickedImageUrl, imageUrls]);
 
   useEffect(() => {
@@ -113,7 +111,6 @@ export default function ZoomedImages() {
               nextImage();
             } else {
               await remove(child(favDB, keyToDelete));
-              nextImage();
               setShowBirdGallery(false);
             }
           }
@@ -121,7 +118,6 @@ export default function ZoomedImages() {
       }
     }
   }
-  console.log(imageFavorites.length);
 
   async function toggleFavorite() {
     if (user) {

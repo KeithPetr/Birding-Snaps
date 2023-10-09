@@ -1,5 +1,5 @@
 import { BirdContext } from "../BirdContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import ZoomedImages from "./ZoomedImages";
 
 export default function Favorites() {
@@ -10,35 +10,78 @@ export default function Favorites() {
     showBirdGallery,
     setClickedImageUrl,
   } = value;
+  const itemsPerPage = 12; // Number of items to show per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
 
-  const photoElements = imageFavorites.map((image, index) => {
-    return (
-      <div
-        key={index}
-        className="w-24 h-24 border hover:border-blue-500 hover:border-2 cursor-pointer transition-transform hover:scale-105"
-      >
-        <img
-          className="h-full w-full"
-          src={image}
-          onClick={() => zoomedFavorites(image)}
-        />
-      </div>
-    );
-  });
+  const photoElements = imageFavorites
+    ?.slice(startIdx, endIdx)
+    .map((image, index) => {
+      return (
+        <div
+          key={index}
+          className="w-24 h-24 border hover:border-blue-500 hover:border-2 cursor-pointer transition-transform hover:scale-105"
+        >
+          <img
+            className="h-full w-full"
+            src={image}
+            onClick={() => zoomedFavorites(image)}
+          />
+        </div>
+      );
+    });
+
+  console.log(imageFavorites.length);
+
+  const totalPageCount = imageFavorites
+    ? Math.ceil(imageFavorites.length / itemsPerPage)
+    : 0;
+
+  function handlePageChange(newPage) {
+    setCurrentPage(newPage);
+  }
+
+  useEffect(() => {
+    // Ensure currentPage doesn't exceed the total number of pages
+    if (currentPage > totalPageCount && totalPageCount > 0) {
+      setCurrentPage(totalPageCount); // Reset to the first page
+    }
+  }, [currentPage, totalPageCount]);
 
   function zoomedFavorites(image) {
     setShowBirdGallery(true);
     setClickedImageUrl(image);
   }
 
+
+  const testArray = Array.from({length: totalPageCount}).map((_, index) => (index + 1))
+  console.log(testArray);
+    
+
   return (
     <>
       {showBirdGallery && <ZoomedImages />}
-      <h1 className="text-blue-400 font-bold text-2xl text-center">
+      <h1 className="text-blue-400 font-bold text-2xl text-center mt-2">
         Favorites
       </h1>
-      <div className="flex flex-wrap gap-x-2 gap-y-2 pb-4 px-2 justify-center mt-4">
-        {photoElements}
+      <div className="flex flex-col items-center mt-4">
+        <div className="flex flex-wrap justify-center gap-2">
+          {photoElements}
+        </div>
+        <div className="mt-4">
+        {Array.from({length: totalPageCount}).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={`mr-1 text-white px-1 ${
+              currentPage === index + 1 ? "bg-blue-500 text-white" : ""
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+        </div>
       </div>
     </>
   );
