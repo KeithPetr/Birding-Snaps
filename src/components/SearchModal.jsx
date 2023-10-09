@@ -58,11 +58,19 @@ export default function SearchModal() {
     }
   }
 
+// Helper function to capitalize the first letter of each word
+function capitalizeWords(query) {
+  return query
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
   // Function to search for images by name
   async function searchImagesByName(query) {
-    const storageRef = ref(storage, `${query}`); // Set the path to your images
-    
-
+    const capitalizedQuery = capitalizeWords(query);
+    setSelectedBirdName(capitalizedQuery);
+    const storageRef = ref(storage, `${capitalizedQuery}`); // Set the path to your images
     try {
       const result = await listAll(storageRef);
       setMatchingImages(result);
@@ -94,11 +102,24 @@ export default function SearchModal() {
 
   function handleKeyDown(event) {
     if (event.key === "Enter") {
-      searchImagesByName(searchTerms.trim());
+      const trimmedSearchTerms = searchTerms.trim().toLowerCase();
+  
+      const isMatching = filteredBirds.some((bird) =>
+        bird.toLowerCase() === trimmedSearchTerms
+      );
+  
+      if (!isMatching) {
+        // Prevent Enter keypress if there are no matching bird folders
+        event.preventDefault();
+        console.log("No matching birds");
+        return;
+      }
+  
+      searchImagesByName(trimmedSearchTerms);
       setIsModalVisible(false);
       setSearchTerms("");
       setGetLetterResults(false);
-      setSelectedBirdName(searchTerms);
+      setDisplayBirdDetails(true);
     }
   }
 

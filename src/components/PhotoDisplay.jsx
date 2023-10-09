@@ -58,7 +58,7 @@ export default function PhotoDisplay() {
     return (
       <div
         key={index}
-        className="w-24 h-24 border hover:border-blue-500 hover:border-2 cursor-pointer transition-transform hover:scale-105"
+        className="w-24 h-24 border hover:border-blue-500 hover:border-4 cursor-pointer"
       >
         <img
           className="h-full w-full"

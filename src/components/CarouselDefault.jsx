@@ -44,7 +44,7 @@ export default function CarouselDefault({enter}) {
             key={index}
             alt="birdingsnaps logo"
             src={image}
-            className="h-full w-full object-cover"
+            className="h-full w-full"
           />
         );
       })}
