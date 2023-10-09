@@ -6,6 +6,9 @@ import { BirdContext } from "../BirdContext";
 export default function GalleryDetails({ enter }) {
   const value = useContext(BirdContext);
   const { displayBirdDetails, imageUrls, selectedBirdName } = value;
+
+  console.log("imageUrls", imageUrls);
+console.log("displayBirdDetails", displayBirdDetails);
   
 
   return (

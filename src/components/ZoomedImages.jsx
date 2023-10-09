@@ -23,6 +23,8 @@ export default function ZoomedImages() {
     setCurrentIndex,
     favCurrentIndex,
     setFavCurrentIndex,
+    isLoading,
+    setIsLoading,
   } = value;
   const userUid = user ? user.uid : null;
   const favDB = ref(database, `favorites/${userUid}`);
@@ -49,18 +51,22 @@ export default function ZoomedImages() {
   useEffect(() => {
     // Update the current index when the clicked image URL changes
     if (!showFavorites) {
+      setIsLoading(true)
       const filteredIndex = imageUrls.findIndex(
         (image) => clickedImageUrl === image.url
       );
       setCurrentIndex(filteredIndex);
+      setIsLoading(false)
     }
   }, [clickedImageUrl, imageUrls]);
 
   useEffect(() => {
+    setIsLoading(true)
     const filteredIndex = imageFavorites.findIndex(
       (image) => clickedImageUrl === image
     );
     setFavCurrentIndex(filteredIndex);
+    setIsLoading(false)
   }, [clickedImageUrl, imageFavorites]);
 
   useEffect(() => {
@@ -70,6 +76,7 @@ export default function ZoomedImages() {
   }, [clickedImageUrl, imageUrls]);
 
   function prevImage() {
+    setIsLoading(true)
     if (showFavorites) {
       const newIndex =
         (favCurrentIndex - 1 + imageFavorites.length) % imageFavorites.length;
@@ -78,9 +85,11 @@ export default function ZoomedImages() {
       const newIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
       setCurrentIndex(newIndex);
     }
+    setIsLoading(false)
   }
 
   const nextImage = () => {
+    setIsLoading(true)
     if (showFavorites) {
       const newIndex = (favCurrentIndex + 1) % imageFavorites.length;
       setFavCurrentIndex(newIndex);
@@ -88,9 +97,11 @@ export default function ZoomedImages() {
       const newIndex = (currentIndex + 1) % imageUrls.length;
       setCurrentIndex(newIndex);
     }
+    setIsLoading(false)
   };
 
   async function removeFavorite() {
+    setIsLoading(true)
     if (showFavorites) {
       if (user) {
         const imageUrl = imageFavorites[favCurrentIndex];
@@ -117,6 +128,7 @@ export default function ZoomedImages() {
         }
       }
     }
+    setIsLoading(false)
   }
 
   async function toggleFavorite() {
@@ -162,15 +174,19 @@ export default function ZoomedImages() {
       ></div>
       <div className="w-11/12 z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
         <div className="border relative">
-          <img
-            className="h-full w-full border select-none"
-            src={
-              showFavorites
-                ? imageFavorites[favCurrentIndex]
-                : imageUrls[currentIndex]?.url
-            }
-            ref={imgRef}
-          />
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <img
+              className="h-full w-full border select-none"
+              src={
+                showFavorites
+                  ? imageFavorites[favCurrentIndex]
+                  : imageUrls[currentIndex]?.url
+              }
+              ref={imgRef}
+            />
+          )}
 
           <div
             className="absolute text-xl bottom-2 right-2 flex items-center gap-2 text-red-900 cursor-pointer"
