@@ -28,10 +28,16 @@ export default function BirdProvider({ children }) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [favCurrentIndex, setFavCurrentIndex] = useState(0);
+  const [wikiQuery, setWikiQuery] = useState(null);
+  const [birdIntro, setBirdIntro] = useState(null);
 
   return (
     <BirdContext.Provider
       value={{
+        wikiQuery,
+        setWikiQuery,
+        birdIntro,
+        setBirdIntro,
         currentIndex,
         setCurrentIndex,
         favCurrentIndex,

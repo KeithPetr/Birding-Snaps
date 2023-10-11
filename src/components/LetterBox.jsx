@@ -26,7 +26,7 @@ export default function LetterBox({ letter }) {
       for (const birdName of birdNames) {
         const birdImageRef = ref(storage, birdName);
         const birdImage = await listAll(birdImageRef);
-        if (birdImage && birdImage.items.length > 0) {
+        if (birdImage && birdImage.items.length > 0) { 
           const imageUrl = await getDownloadURL(birdImage.items[0]);
           firstImages[birdName] = imageUrl;
         }
