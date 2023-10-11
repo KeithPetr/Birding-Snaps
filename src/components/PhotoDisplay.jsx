@@ -9,8 +9,6 @@ export default function PhotoDisplay() {
     matchingImages,
     imageUrls,
     setImageUrls,
-    isLoading,
-    setIsLoading,
     setShowBirdGallery,
     setClickedImageUrl,
   } = value;
@@ -19,7 +17,6 @@ export default function PhotoDisplay() {
 
   useEffect(() => {
     const fetchImageUrls = async () => {
-      setIsLoading(true); // Set loading to true while fetching images
       try {
         if (matchingImages && matchingImages.items) {
           // Map over the items in matchingImages to get the download URLs
@@ -34,10 +31,8 @@ export default function PhotoDisplay() {
           );
           setImageUrls(urls);
         }
-        setIsLoading(false); // Set loading to false when images are fetched
       } catch (error) {
         console.error("Error fetching image URLs:", error);
-        setIsLoading(false); // Set loading to false in case of an error
       }
     };
 
@@ -45,7 +40,7 @@ export default function PhotoDisplay() {
     if (matchingImages && matchingImages.items) {
       fetchImageUrls();
     }
-  }, [matchingImages, setIsLoading, setImageUrls, currentPage]);
+  }, [matchingImages, setImageUrls, currentPage]);
 
   // Calculate totalPageCount only if matchingImages and matchingImages.items are defined
   const totalPageCount =
@@ -82,7 +77,7 @@ export default function PhotoDisplay() {
   return (
     <div className="flex flex-col items-center">
       <div className=" flex flex-wrap justify-center gap-2">
-        {isLoading ? <p>Loading...</p> : photoElements}
+        {photoElements}
       </div>
       <div className="mt-4">
         {Array.from({ length: totalPageCount }).map((_, index) => (
