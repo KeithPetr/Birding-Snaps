@@ -7,7 +7,7 @@ import GalleryDetails from "./GalleryDetails";
 import PhotoDisplay from "./PhotoDisplay";
 import LetterResults from "./LetterResults";
 import Favorites from "./Favorites";
-import ImageEffects from "./ImageEffects";
+
 
 export default function Gallery({ enter }) {
   const value = useContext(BirdContext);
@@ -34,7 +34,6 @@ export default function Gallery({ enter }) {
         {showFavorites && user && <Favorites /> }
          {!getLetterResults && !showFavorites && <GalleryDetails enter={enter} /> } 
          {!getLetterResults && !showFavorites && <PhotoDisplay />} 
-         <ImageEffects/>
     </div>
   );
 }

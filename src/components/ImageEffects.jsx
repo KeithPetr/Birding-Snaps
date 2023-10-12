@@ -17,7 +17,7 @@ export default function ImageFilter() {
   const imageRef = useRef(null);
   const canvasRef = useRef(null);
   const value = useContext(BirdContext);
-  const { imageFavorites } = value;
+  const { imageFavorites, setShowBirdGallery, setShowImageFilters } = value;
   const src = imageFavorites[1];
 
   useEffect(() => {
@@ -53,7 +53,6 @@ export default function ImageFilter() {
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
-    console.log(`New ${name} value: ${value}`);
     switch (name) {
       case "brightness":
         setBrightness(value);
@@ -100,12 +99,24 @@ export default function ImageFilter() {
     setSaturation(initialFilters.saturation);
   }
 
+  function closeImageEffects() {
+    setShowBirdGallery(true)
+    setShowImageFilters(false)
+  }
+
   return (
-    <div>
+    <>
+    
+    
+    <div
+        className="fixed inset-0 bg-gray-900 opacity-50 z-20"
+      ></div>
+    <div className="w-11/12 z-30 flex flex-col items-center absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
       <canvas
         ref={canvasRef}
-        width="200"
-        height="200"
+        className="w-full"
+        width="4896"
+        height="3672"
         onMouseDown={handleCanvasMouseDown}
         onMouseUp={handleCanvasMouseUp}
       ></canvas>
@@ -119,7 +130,7 @@ export default function ImageFilter() {
       />
 
       {imageLoaded && (
-        <div>
+        <div className="my-4">
           <label>
             Brightness:
             <input
@@ -179,6 +190,13 @@ export default function ImageFilter() {
       >
         Reset
       </Button>
+      <Button
+        className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2"
+        onClick={closeImageEffects}
+      >
+        Close
+      </Button>
     </div>
+    </>
   );
 }
