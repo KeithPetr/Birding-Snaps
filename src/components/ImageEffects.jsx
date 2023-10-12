@@ -8,11 +8,17 @@ export default function ImageFilter() {
   const [contrast, setContrast] = useState(100);
   const [grayscale, setGrayscale] = useState(0);
   const [saturation, setSaturation] = useState(100);
+  const [initialFilters, setInitialFilters] = useState({
+    brightness: 100,
+    contrast: 100,
+    grayscale: 0,
+    saturation: 100,
+  });
   const imageRef = useRef(null);
   const canvasRef = useRef(null);
   const value = useContext(BirdContext);
   const { imageFavorites } = value;
-  const src = imageFavorites[2];
+  const src = imageFavorites[1];
 
   useEffect(() => {
     loadImage(src);
@@ -45,11 +51,9 @@ export default function ImageFilter() {
     );
   };
 
-  console.log(saturation)
-
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
-    console.log(`New ${name} value: ${value}`)
+    console.log(`New ${name} value: ${value}`);
     switch (name) {
       case "brightness":
         setBrightness(value);
@@ -69,15 +73,43 @@ export default function ImageFilter() {
   };
 
   function resetFilters() {
+    // Store the current filter settings in initialFilters
+    setInitialFilters({
+      brightness,
+      contrast,
+      grayscale,
+      saturation,
+    });
+
+    // Reset the filters to their original values
     setBrightness(100);
-    setContrast(100)
-    setGrayscale(0)
-    setSaturation(100)
+    setContrast(100);
+    setGrayscale(0);
+    setSaturation(100);
+  }
+
+  function handleCanvasMouseDown() {
+    resetFilters();
+  }
+
+  function handleCanvasMouseUp() {
+    // Restore the filters to their previous values from initialFilters
+    setBrightness(initialFilters.brightness);
+    setContrast(initialFilters.contrast);
+    setGrayscale(initialFilters.grayscale);
+    setSaturation(initialFilters.saturation);
   }
 
   return (
     <div>
-      <canvas ref={canvasRef} width="200" height="200"></canvas>
+      <canvas
+        ref={canvasRef}
+        width="200"
+        height="200"
+        onMouseDown={handleCanvasMouseDown}
+        onMouseUp={handleCanvasMouseUp}
+      ></canvas>
+
       <img
         src={src}
         alt="Original"
@@ -85,6 +117,7 @@ export default function ImageFilter() {
         ref={imageRef}
         onLoad={drawImage}
       />
+
       {imageLoaded && (
         <div>
           <label>
@@ -140,7 +173,12 @@ export default function ImageFilter() {
           </label>
         </div>
       )}
-      <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2" onClick={resetFilters}>Reset</Button>
+      <Button
+        className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2"
+        onClick={resetFilters}
+      >
+        Reset
+      </Button>
     </div>
   );
 }
