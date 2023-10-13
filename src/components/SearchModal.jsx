@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useContext, useRef } from "react";
+import { useEffect, useContext, useRef, useState } from "react";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { app } from "../../firebase.config.js";
 import { BirdContext } from "../BirdContext";
+import ReactLoading from "react-loading";
 
 export default function SearchModal() {
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
   const searchInputRef = useRef(null);
   const value = useContext(BirdContext);
   const {
@@ -14,8 +16,6 @@ export default function SearchModal() {
     setSearchTerms,
     filteredBirds,
     setFilteredBirds,
-    isLoading,
-    setIsLoading,
     selectedBirdImage,
     setSelectedBirdImage,
     setGetLetterResults,
@@ -26,37 +26,43 @@ export default function SearchModal() {
     wikiQuery,
     setBirdIntro,
     setShowFavorites,
+    setIsLoading,
   } = value;
 
   const storage = getStorage(app);
 
   async function filterResults(query) {
-    const storageRef = ref(storage, "");
-    try {
-      const result = await listAll(storageRef);
+    if (query.length >= 4) {
+      setIsFilterLoading(true);
+      const storageRef = ref(storage, "");
+      try {
+        const result = await listAll(storageRef);
 
-      const matchingBirds = result.prefixes.filter((item) =>
-        item.fullPath.toLowerCase().includes(query.toLowerCase())
-      );
+        const matchingBirds = result.prefixes.filter((item) =>
+          item.fullPath.toLowerCase().includes(query.toLowerCase())
+        );
 
-      const birdNames = matchingBirds.map((bird) => bird.fullPath);
+        const birdNames = matchingBirds.map((bird) => bird.fullPath);
 
-      // Fetch and store the first image URL for each bird name
-      const firstImageUrls = {};
-      for (const birdName of birdNames) {
-        const birdImageRef = ref(storage, birdName);
-        const birdImage = await listAll(birdImageRef);
-        if (birdImage && birdImage.items.length > 0) {
-          const imageUrl = await getDownloadURL(birdImage.items[0]);
-          firstImageUrls[birdName] = imageUrl;
+        // Fetch and store the first image URL for each bird name
+        const firstImageUrls = {};
+        for (const birdName of birdNames) {
+          const birdImageRef = ref(storage, birdName);
+          const birdImage = await listAll(birdImageRef);
+          if (birdImage && birdImage.items.length > 0) {
+            const imageUrl = await getDownloadURL(birdImage.items[0]);
+            firstImageUrls[birdName] = imageUrl;
+          }
         }
-      }
 
-      setSelectedBirdImage(firstImageUrls);
-      setFilteredBirds(birdNames);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error filtering results: ", error);
+        setSelectedBirdImage(firstImageUrls);
+        setFilteredBirds(birdNames);
+        setIsFilterLoading(false);
+      } catch (error) {
+        console.error("Error filtering results: ", error);
+      }
+    } else {
+      setFilteredBirds([]);
     }
   }
 
@@ -66,10 +72,6 @@ export default function SearchModal() {
     const joinTest = splitTest.join("_");
     const wikiQuery = joinTest.charAt(0).toUpperCase() + joinTest.slice(1);
     setWikiQuery(wikiQuery);
-    console.log(query);
-    console.log(joinTest);
-    console.log("split: ", query.split(" "));
-    console.log(wikiQuery);
     return query
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -88,7 +90,6 @@ export default function SearchModal() {
         }
         const data = await response.json();
         setBirdIntro(data.extract);
-        console.log(data.extract);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -189,7 +190,7 @@ export default function SearchModal() {
       )}
 
       <div
-        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[100px] ${hiddenVal}`}
+        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[200px] ${hiddenVal}`}
       >
         <div className="flex justify-end pr-1">
           <div
@@ -204,18 +205,27 @@ export default function SearchModal() {
           onChange={handleInput}
           value={searchTerms}
           onKeyDown={handleKeyDown}
-          placeholder="Search..."
+          placeholder="Enter at least 4 letters..."
           ref={searchInputRef}
         />
-        {isLoading ? (
-          <div>Loading...</div>
+        {searchTerms.trim().length === 0 ? ( // Check if the search term has no real characters
+          ""
+        ) : isFilterLoading ? (
+          <div className="mx-auto bg-blue-800 border-b">
+            <ReactLoading
+              className="mx-auto py-4"
+              type="spokes"
+              height="30%"
+              width="30%"
+            />
+          </div>
         ) : (
-          <div>
+          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
             {filteredBirds.map((bird, index) => {
               return (
                 <div
                   key={index}
-                  className="flex items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 cursor-pointer border-b"
+                  className="flex items-center bg-blue-800 hover-bg-blue-500 px-2 py-2 cursor-pointer border-b"
                   onClick={() => enterSearchTerms(bird)}
                 >
                   <img className="w-24 h-20" src={selectedBirdImage[bird]} />

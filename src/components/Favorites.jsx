@@ -32,8 +32,6 @@ export default function Favorites() {
       );
     });
 
-  console.log(imageFavorites.length);
-
   const totalPageCount = imageFavorites
     ? Math.ceil(imageFavorites.length / itemsPerPage)
     : 0;
@@ -53,11 +51,6 @@ export default function Favorites() {
     setShowBirdGallery(true);
     setClickedImageUrl(image);
   }
-
-
-  const testArray = Array.from({length: totalPageCount}).map((_, index) => (index + 1))
-  console.log(testArray);
-    
 
   return (
     <>

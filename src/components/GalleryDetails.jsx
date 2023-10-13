@@ -15,12 +15,10 @@ export default function GalleryDetails({ enter }) {
   };
 
   const truncateText = (text, limit) => {
-    console.log(limit)
     if (text.length <= limit) {
       return text;
     }
     const lastSpaceIndex = text.lastIndexOf(" ", limit);
-    console.log(lastSpaceIndex)
     return text.slice(0, lastSpaceIndex) + " ...";
   };
 

@@ -14,7 +14,6 @@ export default function LetterResults() {
     setWikiQuery,
     setIsLoading,
   } = value;
-  console.log("first image urls: ", firstImageUrls);
   const entries = Object.entries(firstImageUrls);
   const firstLetter = entries[0]?.[0].charAt(0);
   const storage = getStorage(app);
