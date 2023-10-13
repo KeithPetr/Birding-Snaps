@@ -17,8 +17,13 @@ export default function ImageFilter() {
   const imageRef = useRef(null);
   const canvasRef = useRef(null);
   const value = useContext(BirdContext);
-  const { imageFavorites, setShowBirdGallery, setShowImageFilters } = value;
-  const src = imageFavorites[1];
+  const {
+    imageFavorites,
+    setShowBirdGallery,
+    setShowImageFilters,
+    favCurrentIndex,
+  } = value;
+  const src = imageFavorites[favCurrentIndex];
 
   useEffect(() => {
     loadImage(src);
@@ -100,103 +105,105 @@ export default function ImageFilter() {
   }
 
   function closeImageEffects() {
-    setShowBirdGallery(true)
-    setShowImageFilters(false)
+    setShowBirdGallery(true);
+    setShowImageFilters(false);
   }
 
   return (
     <>
-    
-    
-    <div
-        className="fixed inset-0 bg-gray-900 opacity-50 z-20"
-      ></div>
-    <div className="w-11/12 z-30 flex flex-col items-center absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-      <canvas
-        ref={canvasRef}
-        className="w-full"
-        width="4896"
-        height="3672"
-        onMouseDown={handleCanvasMouseDown}
-        onMouseUp={handleCanvasMouseUp}
-      ></canvas>
+      <div className="fixed inset-0 bg-gray-900 opacity-50 z-20"></div>
+      <div className="w-11/12 z-30 flex flex-col items-center absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+        <canvas
+          ref={canvasRef}
+          className="w-full border"
+          width="4896"
+          height="3672"
+          onMouseDown={handleCanvasMouseDown}
+          onMouseUp={handleCanvasMouseUp}
+          onTouchStart={handleCanvasMouseDown}
+          onTouchEnd={handleCanvasMouseUp}
+        ></canvas>
 
-      <img
-        src={src}
-        alt="Original"
-        style={{ display: "none" }}
-        ref={imageRef}
-        onLoad={drawImage}
-      />
+        <img
+          src={src}
+          alt="Original"
+          style={{ display: "none" }}
+          ref={imageRef}
+          onLoad={drawImage}
+        />
 
-      {imageLoaded && (
-        <div className="my-4">
-          <label>
-            Brightness:
-            <input
-              type="range"
-              name="brightness"
-              min="0"
-              max="200"
-              value={brightness}
-              onChange={handleFilterChange}
-            />
-            {brightness}%
-          </label>
-          <br />
-          <label>
-            Contrast:
-            <input
-              type="range"
-              name="contrast"
-              min="0"
-              max="200"
-              value={contrast}
-              onChange={handleFilterChange}
-            />
-            {contrast}%
-          </label>
-          <br />
-          <label>
-            Grayscale:
-            <input
-              type="range"
-              name="grayscale"
-              min="0"
-              max="100"
-              value={grayscale}
-              onChange={handleFilterChange}
-            />
-            {grayscale}%
-          </label>
-          <br />
-          <label>
-            Saturation:
-            <input
-              type="range"
-              name="saturation"
-              min="0"
-              max="200"
-              value={saturation}
-              onChange={handleFilterChange}
-            />
-            {saturation}%
-          </label>
-        </div>
-      )}
-      <Button
-        className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2"
-        onClick={resetFilters}
-      >
-        Reset
-      </Button>
-      <Button
-        className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2"
-        onClick={closeImageEffects}
-      >
-        Close
-      </Button>
-    </div>
+        {imageLoaded && (
+          <div className="my-4 text-gray-100">
+            <label className="select-none">
+              Brightness:
+              <input
+              className="mx-2"
+                type="range"
+                name="brightness"
+                min="0"
+                max="200"
+                value={brightness}
+                onChange={handleFilterChange}
+              />
+              {brightness}%
+            </label>
+            <br />
+            <label className="select-none">
+              Contrast:
+              <input
+               className="mx-2"
+                type="range"
+                name="contrast"
+                min="0"
+                max="200"
+                value={contrast}
+                onChange={handleFilterChange}
+              />
+              {contrast}%
+            </label>
+            <br />
+            <label className="select-none">
+              Grayscale:
+              <input
+               className="mx-2"
+                type="range"
+                name="grayscale"
+                min="0"
+                max="100"
+                value={grayscale}
+                onChange={handleFilterChange}
+              />
+              {grayscale}%
+            </label>
+            <br />
+            <label className="select-none">
+              Saturation:
+              <input
+               className="mx-2"
+                type="range"
+                name="saturation"
+                min="0"
+                max="200"
+                value={saturation}
+                onChange={handleFilterChange}
+              />
+              {saturation}%
+            </label>
+          </div>
+        )}
+        <Button
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2"
+          onClick={resetFilters}
+        >
+          Reset
+        </Button>
+        <Button
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2"
+          onClick={closeImageEffects}
+        >
+          Close
+        </Button>
+      </div>
     </>
   );
 }
