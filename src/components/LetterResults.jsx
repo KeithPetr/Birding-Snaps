@@ -11,7 +11,8 @@ export default function LetterResults() {
     setMatchingImages,
     setDisplayBirdDetails,
     setSelectedBirdName,
-    setWikiQuery
+    setWikiQuery,
+    setIsLoading,
   } = value;
   console.log("first image urls: ", firstImageUrls);
   const entries = Object.entries(firstImageUrls);
@@ -23,9 +24,15 @@ export default function LetterResults() {
 
     try {
       const result = await listAll(storageRef);
-      setMatchingImages(result);
-      setDisplayBirdDetails(true);
-      setWikiQuery(query)
+      setIsLoading(true)
+      setMatchingImages(null)
+      setTimeout(() => {
+        setMatchingImages(result);
+        setDisplayBirdDetails(true);
+        setWikiQuery(query)
+        setIsLoading(false)
+      }, 2000)
+      
     } catch (error) {
       console.error("Error searching for images:", error);
 

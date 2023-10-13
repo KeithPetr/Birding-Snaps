@@ -5,7 +5,7 @@ import { BirdContext } from "../BirdContext";
 
 export default function GalleryDetails({ enter }) {
   const value = useContext(BirdContext);
-  const { displayBirdDetails, imageUrls, selectedBirdName, birdIntro } = value;
+  const { displayBirdDetails, imageUrls, selectedBirdName, birdIntro, isLoading } = value;
 
   const characterLimit = 100;
   const [showFullIntro, setShowFullIntro] = useState(false);
@@ -25,6 +25,7 @@ export default function GalleryDetails({ enter }) {
   };
 
   return (
+    isLoading ? '' :
     <div className="p-4 flex flex-col items-center">
       <h1 className="text-blue-400 font-bold text-2xl text-center">
         {selectedBirdName ? selectedBirdName : "Today's Favorites"}

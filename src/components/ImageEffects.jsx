@@ -115,9 +115,9 @@ export default function ImageFilter() {
       <div className="w-11/12 z-30 flex flex-col items-center absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
         <canvas
           ref={canvasRef}
-          className="w-full border"
-          width="4896"
-          height="3672"
+          className="w-full max-w-[900px] border"
+          width="1600"
+          height="1200"
           onMouseDown={handleCanvasMouseDown}
           onMouseUp={handleCanvasMouseUp}
           onTouchStart={handleCanvasMouseDown}

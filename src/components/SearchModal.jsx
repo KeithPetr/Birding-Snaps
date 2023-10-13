@@ -24,7 +24,8 @@ export default function SearchModal() {
     setDisplayBirdDetails,
     setWikiQuery,
     wikiQuery,
-    setBirdIntro
+    setBirdIntro,
+    setShowFavorites,
   } = value;
 
   const storage = getStorage(app);
@@ -33,13 +34,12 @@ export default function SearchModal() {
     const storageRef = ref(storage, "");
     try {
       const result = await listAll(storageRef);
-      
+
       const matchingBirds = result.prefixes.filter((item) =>
         item.fullPath.toLowerCase().includes(query.toLowerCase())
       );
-     
+
       const birdNames = matchingBirds.map((bird) => bird.fullPath);
-     
 
       // Fetch and store the first image URL for each bird name
       const firstImageUrls = {};
@@ -51,7 +51,6 @@ export default function SearchModal() {
           firstImageUrls[birdName] = imageUrl;
         }
       }
- 
 
       setSelectedBirdImage(firstImageUrls);
       setFilteredBirds(birdNames);
@@ -61,41 +60,41 @@ export default function SearchModal() {
     }
   }
 
-// Helper function to capitalize the first letter of each word
-function capitalizeWords(query) {
-  const splitTest = query.split(' ');
-  const joinTest = splitTest.join('_');
-  const wikiQuery = joinTest.charAt(0).toUpperCase() + joinTest.slice(1)
-  setWikiQuery(wikiQuery)
-  console.log(query)
-  console.log(joinTest)
-  console.log("split: ", query.split(' '))
-  console.log(wikiQuery)
-  return query
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
-
-// Get information from Wikipedia ---------------------------
-useEffect(() => {
-  async function fetchData() {
-    try {
-      const response = await fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/summary/${wikiQuery}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setBirdIntro(data.extract);
-      console.log(data.extract);
-    } catch (error) {
-      console.log("Error fetching data: ", error);
-    }
+  // Helper function to capitalize the first letter of each word
+  function capitalizeWords(query) {
+    const splitTest = query.split(" ");
+    const joinTest = splitTest.join("_");
+    const wikiQuery = joinTest.charAt(0).toUpperCase() + joinTest.slice(1);
+    setWikiQuery(wikiQuery);
+    console.log(query);
+    console.log(joinTest);
+    console.log("split: ", query.split(" "));
+    console.log(wikiQuery);
+    return query
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   }
-  fetchData();
-}, [wikiQuery, setBirdIntro]);
+
+  // Get information from Wikipedia ---------------------------
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `https://en.wikipedia.org/api/rest_v1/page/summary/${wikiQuery}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setBirdIntro(data.extract);
+        console.log(data.extract);
+      } catch (error) {
+        console.log("Error fetching data: ", error);
+      }
+    }
+    fetchData();
+  }, [wikiQuery, setBirdIntro]);
 
   // Function to search for images by name -------------------------
   async function searchImagesByName(query) {
@@ -104,6 +103,7 @@ useEffect(() => {
     const storageRef = ref(storage, `${capitalizedQuery}`); // Set the path to your images
     try {
       const result = await listAll(storageRef);
+      setMatchingImages(null);
       setMatchingImages(result);
     } catch (error) {
       console.error("Error searching for images:", error);
@@ -134,23 +134,28 @@ useEffect(() => {
   function handleKeyDown(event) {
     if (event.key === "Enter") {
       const trimmedSearchTerms = searchTerms.trim().toLowerCase();
-  
-      const isMatching = filteredBirds.some((bird) =>
-        bird.toLowerCase() === trimmedSearchTerms
+
+      const isMatching = filteredBirds.some(
+        (bird) => bird.toLowerCase() === trimmedSearchTerms
       );
-  
+
       if (!isMatching) {
         // Prevent Enter keypress if there are no matching bird folders
         event.preventDefault();
         console.log("No matching birds");
         return;
       }
-  
-      searchImagesByName(trimmedSearchTerms);
+
+      setIsLoading(true);
       setIsModalVisible(false);
-      setSearchTerms("");
-      setGetLetterResults(false);
-      setDisplayBirdDetails(true);
+      setTimeout(() => {
+        searchImagesByName(trimmedSearchTerms);
+        setSearchTerms("");
+        setGetLetterResults(false);
+        setDisplayBirdDetails(true);
+        setShowFavorites(false);
+        setIsLoading(false);
+      }, 2000);
     }
   }
 
@@ -160,15 +165,19 @@ useEffect(() => {
   }
 
   function enterSearchTerms(name) {
+    setIsLoading(true);
+    setIsModalVisible(false);
     setGetLetterResults(false);
-    setSearchTerms(name);
+    setShowFavorites(false);
+    searchImagesByName(name);
     setDisplayBirdDetails(true);
+
     setTimeout(function () {
-      searchImagesByName(name);
+      setSearchTerms(name);
       setSelectedBirdName(name);
-      setIsModalVisible(false);
       setSearchTerms("");
-    }, 500);
+      setIsLoading(false);
+    }, 1500);
   }
 
   const hiddenVal = isModalVisible ? "" : "hidden";
@@ -203,7 +212,6 @@ useEffect(() => {
         ) : (
           <div>
             {filteredBirds.map((bird, index) => {
-              
               return (
                 <div
                   key={index}

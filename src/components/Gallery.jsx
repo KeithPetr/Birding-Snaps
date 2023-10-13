@@ -29,7 +29,7 @@ export default function Gallery({ enter }) {
   }, [userUid, setImageFavorites]);
 
   return (
-    <div className="bg-gray-900 w-3/4 pb-4">
+    <div className="flex flex-col bg-gray-900 w-3/4 pb-4">
         {getLetterResults && <LetterResults />}
         {showFavorites && user && <Favorites /> }
          {!getLetterResults && !showFavorites && <GalleryDetails enter={enter} /> } 

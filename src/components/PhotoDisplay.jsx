@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { BirdContext } from "../BirdContext";
 import { getDownloadURL } from "firebase/storage";
+import ReactLoading from "react-loading";
 
 export default function PhotoDisplay() {
   const value = useContext(BirdContext);
@@ -11,6 +12,7 @@ export default function PhotoDisplay() {
     setImageUrls,
     setShowBirdGallery,
     setClickedImageUrl,
+    isLoading,
   } = value;
   const itemsPerPage = 8; // Number of items to show per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,7 +76,11 @@ export default function PhotoDisplay() {
     setCurrentPage(newPage);
   }
 
-  return (
+  return isLoading ? (
+    <div className="flex flex-col items-center justify-center h-full">
+      <ReactLoading type="spokes" height={100} width={100} />
+    </div>
+  ) : (
     <div className="flex flex-col items-center">
       <div className=" flex flex-wrap justify-center gap-2">
         {photoElements}
