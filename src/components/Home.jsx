@@ -7,16 +7,18 @@ import { BirdContext } from "../BirdContext";
 import { useContext } from "react";
 import ZoomedImages from "./ZoomedImages";
 import LoginModal from "./LoginModal";
+import ImageEffects from "./ImageEffects";
 
 export default function Home({ setEnter, enter }) {
   const value = useContext(BirdContext);
-  const { showBirdGallery, showLoginModal } = value;
+  const { showBirdGallery, showLoginModal, showImageFilters } = value;
 
   return (
     <div className="relative flex flex-col h-screen">
       <Header setEnter={setEnter} />
       {showLoginModal && <LoginModal />}
       {showBirdGallery && <ZoomedImages />}
+      {showImageFilters && <ImageEffects />}
       <>
         <div className="flex flex-grow">
           <Sidebar />

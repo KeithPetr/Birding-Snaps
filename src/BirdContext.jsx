@@ -30,10 +30,13 @@ export default function BirdProvider({ children }) {
   const [favCurrentIndex, setFavCurrentIndex] = useState(0);
   const [wikiQuery, setWikiQuery] = useState(null);
   const [birdIntro, setBirdIntro] = useState(null);
+  const [showImageFilters, setShowImageFilters] = useState(false);
 
   return (
     <BirdContext.Provider
       value={{
+        showImageFilters,
+        setShowImageFilters,
         wikiQuery,
         setWikiQuery,
         birdIntro,

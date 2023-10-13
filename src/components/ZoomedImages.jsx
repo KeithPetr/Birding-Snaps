@@ -6,6 +6,7 @@ import { database } from "../../firebase.config";
 import { Button } from "@material-tailwind/react";
 import { ref, push, remove, get, child, set } from "firebase/database";
 
+
 export default function ZoomedImages() {
   const imgRef = useRef(null);
   const value = useContext(BirdContext);
@@ -25,6 +26,7 @@ export default function ZoomedImages() {
     setFavCurrentIndex,
     isLoading,
     setIsLoading,
+    setShowImageFilters,
   } = value;
   const userUid = user ? user.uid : null;
   const favDB = ref(database, `favorites/${userUid}`);
@@ -51,22 +53,22 @@ export default function ZoomedImages() {
   useEffect(() => {
     // Update the current index when the clicked image URL changes
     if (!showFavorites) {
-      setIsLoading(true)
+      setIsLoading(true);
       const filteredIndex = imageUrls.findIndex(
         (image) => clickedImageUrl === image.url
       );
       setCurrentIndex(filteredIndex);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [clickedImageUrl, imageUrls]);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const filteredIndex = imageFavorites.findIndex(
       (image) => clickedImageUrl === image
     );
     setFavCurrentIndex(filteredIndex);
-    setIsLoading(false)
+    setIsLoading(false);
   }, [clickedImageUrl, imageFavorites]);
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function ZoomedImages() {
   }, [clickedImageUrl, imageUrls]);
 
   function prevImage() {
-    setIsLoading(true)
+    setIsLoading(true);
     if (showFavorites) {
       const newIndex =
         (favCurrentIndex - 1 + imageFavorites.length) % imageFavorites.length;
@@ -85,11 +87,11 @@ export default function ZoomedImages() {
       const newIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
       setCurrentIndex(newIndex);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   const nextImage = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (showFavorites) {
       const newIndex = (favCurrentIndex + 1) % imageFavorites.length;
       setFavCurrentIndex(newIndex);
@@ -97,11 +99,11 @@ export default function ZoomedImages() {
       const newIndex = (currentIndex + 1) % imageUrls.length;
       setCurrentIndex(newIndex);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   async function removeFavorite() {
-    setIsLoading(true)
+    setIsLoading(true);
     if (showFavorites) {
       if (user) {
         const imageUrl = imageFavorites[favCurrentIndex];
@@ -128,7 +130,7 @@ export default function ZoomedImages() {
         }
       }
     }
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   async function toggleFavorite() {
@@ -166,19 +168,29 @@ export default function ZoomedImages() {
     }
   }
 
+  function toggleImageFilters() {
+    setShowImageFilters(true)
+    setShowBirdGallery(false)
+  }
+
+  
+
   return (
     <>
       <div
         className="fixed inset-0 bg-gray-900 opacity-50 z-20"
         onClick={() => setShowBirdGallery(false)}
       ></div>
-      <div className="w-11/12 z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+
+      <div
+        className={`w-11/12 z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 max-w-[900px]`}
+      >
         <div className="border relative">
           {isLoading ? (
             <p>Loading...</p>
           ) : (
             <img
-              className="h-full w-full border select-none"
+              className="select-none"
               src={
                 showFavorites
                   ? imageFavorites[favCurrentIndex]
@@ -224,6 +236,14 @@ export default function ZoomedImages() {
             ➡️
           </div>
         </div>
+        {showFavorites && (
+          <Button
+            className="bg-blue-300 text-gray-50 border-2 border-blue-100 cursor-pointer py-2 px-2 mx-auto mt-3 block"
+            onClick={toggleImageFilters}
+          >
+            Add Image Filters
+          </Button>
+        )}
       </div>
     </>
   );
