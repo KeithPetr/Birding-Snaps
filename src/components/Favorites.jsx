@@ -32,8 +32,6 @@ export default function Favorites() {
       );
     });
 
-  console.log(imageFavorites.length);
-
   const totalPageCount = imageFavorites
     ? Math.ceil(imageFavorites.length / itemsPerPage)
     : 0;
