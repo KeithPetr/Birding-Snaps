@@ -52,11 +52,6 @@ export default function Favorites() {
     setClickedImageUrl(image);
   }
 
-
-  const testArray = Array.from({length: totalPageCount}).map((_, index) => (index + 1))
-  console.log(testArray);
-    
-
   return (
     <>
       {showBirdGallery && <ZoomedImages />}

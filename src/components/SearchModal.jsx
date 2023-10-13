@@ -6,7 +6,7 @@ import { BirdContext } from "../BirdContext";
 import ReactLoading from "react-loading";
 
 export default function SearchModal() {
-  const [isFilterLoading, setIsFilterLoading] = useState(false)
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
   const searchInputRef = useRef(null);
   const value = useContext(BirdContext);
   const {
@@ -26,40 +26,43 @@ export default function SearchModal() {
     wikiQuery,
     setBirdIntro,
     setShowFavorites,
-    isLoading,
-    setIsLoading
+    setIsLoading,
   } = value;
 
   const storage = getStorage(app);
 
   async function filterResults(query) {
-    setIsFilterLoading(true);
-    const storageRef = ref(storage, "");
-    try {
-      const result = await listAll(storageRef);
+    if (query.length >= 4) {
+      setIsFilterLoading(true);
+      const storageRef = ref(storage, "");
+      try {
+        const result = await listAll(storageRef);
 
-      const matchingBirds = result.prefixes.filter((item) =>
-        item.fullPath.toLowerCase().includes(query.toLowerCase())
-      );
+        const matchingBirds = result.prefixes.filter((item) =>
+          item.fullPath.toLowerCase().includes(query.toLowerCase())
+        );
 
-      const birdNames = matchingBirds.map((bird) => bird.fullPath);
+        const birdNames = matchingBirds.map((bird) => bird.fullPath);
 
-      // Fetch and store the first image URL for each bird name
-      const firstImageUrls = {};
-      for (const birdName of birdNames) {
-        const birdImageRef = ref(storage, birdName);
-        const birdImage = await listAll(birdImageRef);
-        if (birdImage && birdImage.items.length > 0) {
-          const imageUrl = await getDownloadURL(birdImage.items[0]);
-          firstImageUrls[birdName] = imageUrl;
+        // Fetch and store the first image URL for each bird name
+        const firstImageUrls = {};
+        for (const birdName of birdNames) {
+          const birdImageRef = ref(storage, birdName);
+          const birdImage = await listAll(birdImageRef);
+          if (birdImage && birdImage.items.length > 0) {
+            const imageUrl = await getDownloadURL(birdImage.items[0]);
+            firstImageUrls[birdName] = imageUrl;
+          }
         }
-      }
 
-      setSelectedBirdImage(firstImageUrls);
-      setFilteredBirds(birdNames);
-      setIsFilterLoading(false);
-    } catch (error) {
-      console.error("Error filtering results: ", error);
+        setSelectedBirdImage(firstImageUrls);
+        setFilteredBirds(birdNames);
+        setIsFilterLoading(false);
+      } catch (error) {
+        console.error("Error filtering results: ", error);
+      }
+    } else {
+      setFilteredBirds([]);
     }
   }
 
@@ -185,9 +188,9 @@ export default function SearchModal() {
       {isModalVisible && (
         <div className="fixed inset-0 bg-gray-900 opacity-50 z-20"></div>
       )}
-  
+
       <div
-        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[100px] ${hiddenVal}`}
+        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[200px] ${hiddenVal}`}
       >
         <div className="flex justify-end pr-1">
           <div
@@ -202,17 +205,22 @@ export default function SearchModal() {
           onChange={handleInput}
           value={searchTerms}
           onKeyDown={handleKeyDown}
-          placeholder="Search..."
+          placeholder="Enter at least 4 letters..."
           ref={searchInputRef}
         />
         {searchTerms.trim().length === 0 ? ( // Check if the search term has no real characters
-          ''
+          ""
         ) : isFilterLoading ? (
           <div className="mx-auto bg-blue-800 border-b">
-            <ReactLoading className="mx-auto py-4" type="spokes" height='30%' width='30%' />
+            <ReactLoading
+              className="mx-auto py-4"
+              type="spokes"
+              height="30%"
+              width="30%"
+            />
           </div>
         ) : (
-          <div>
+          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
             {filteredBirds.map((bird, index) => {
               return (
                 <div
