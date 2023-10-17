@@ -34,7 +34,7 @@ export default function LoginModal() {
       <div
         className="flex flex-col items-center w-11/12 h-48 z-30 
       bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 
-      -translate-y-1/2"
+      -translate-y-1/2 max-w-[400px]"
       >
         <div className="relative flex justify-center w-full h-full">
           <div
