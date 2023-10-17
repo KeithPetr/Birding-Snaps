@@ -7,10 +7,17 @@ import GalleryDetails from "./GalleryDetails";
 import PhotoDisplay from "./PhotoDisplay";
 import LetterResults from "./LetterResults";
 import Favorites from "./Favorites";
+import TodaysFavorites from "./TodaysFavorites";
 
-export default function Gallery({ enter }) {
+export default function Gallery() {
   const value = useContext(BirdContext);
-  const { setImageFavorites, user, getLetterResults, showFavorites } = value;
+  const {
+    setImageFavorites,
+    user,
+    getLetterResults,
+    showFavorites,
+    showTodaysFavorites,
+  } = value;
   const userUid = user ? user.uid : null;
 
   useEffect(() => {
@@ -28,14 +35,15 @@ export default function Gallery({ enter }) {
 
   return (
     <div className="relative flex flex-col w-full pb-4 bg-black-opacity-30">
+      {showTodaysFavorites && <TodaysFavorites />}
       {getLetterResults && <LetterResults />}
       {showFavorites && user && <Favorites />}
-      <div className="flex flex-col items-center justify-center md:flex md:flex-row md:mx-4 md:items-center md:my-auto">
-        {!getLetterResults && !showFavorites && (
-          <GalleryDetails enter={enter} />
-        )}
-        {!getLetterResults && !showFavorites && <PhotoDisplay />}
-      </div>
+      {!getLetterResults && !showFavorites && !showTodaysFavorites && (
+        <div className="flex flex-col items-center justify-center md:flex md:flex-row md:mx-4 md:items-center md:my-auto">
+          <GalleryDetails />
+          <PhotoDisplay />
+        </div>
+      )}
     </div>
   );
 }

@@ -10,6 +10,7 @@ export default function SearchModal() {
   const searchInputRef = useRef(null);
   const value = useContext(BirdContext);
   const {
+    setShowTodaysFavorites,
     isModalVisible,
     setIsModalVisible,
     searchTerms,
@@ -149,6 +150,7 @@ export default function SearchModal() {
 
       setIsLoading(true);
       setIsModalVisible(false);
+      setShowTodaysFavorites(false);
       setTimeout(() => {
         searchImagesByName(trimmedSearchTerms);
         setSearchTerms("");
@@ -172,6 +174,7 @@ export default function SearchModal() {
     setShowFavorites(false);
     searchImagesByName(name);
     setDisplayBirdDetails(true);
+    setShowTodaysFavorites(false);
 
     setTimeout(function () {
       setSearchTerms(name);

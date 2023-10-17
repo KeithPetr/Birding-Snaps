@@ -55,7 +55,7 @@ export default function LetterResults() {
               setSelectedBirdName(key);
             }}
           >
-            <img className="w-24 h-20 sm:w-36 sm:h-28 md:w-40 md:h-36 rounded" src={value} />
+            <img className="w-24 h-20 sm:w-36 sm:h-28 md:w-40 md:h-36 rounded " src={value} />
             <div className="text-outline text-md sm:text-lg md:text-2xl ml-2">{key}</div>
           </div>
         ))}

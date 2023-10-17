@@ -13,6 +13,7 @@ export default function Sidebar() {
     showFavorites,
     setShowFavorites,
     setGetLetterResults,
+    setShowTodaysFavorites,
   } = value;
   const [filteredLetters, setFilteredLetters] = useState([]); // State to store filtered letters
 
@@ -52,11 +53,13 @@ export default function Sidebar() {
 
   const handleSearchClick = () => {
     setIsModalVisible((prev) => !prev);
+    setShowTodaysFavorites(false);
   };
 
   const toggleFavorites = () => {
     setShowFavorites(!showFavorites);
     setGetLetterResults(false);
+    setShowTodaysFavorites(false);
   };
 
   return (

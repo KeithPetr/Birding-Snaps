@@ -31,10 +31,13 @@ export default function BirdProvider({ children }) {
   const [wikiQuery, setWikiQuery] = useState(null);
   const [birdIntro, setBirdIntro] = useState(null);
   const [showImageFilters, setShowImageFilters] = useState(false);
+  const [showTodaysFavorites, setShowTodaysFavorites] = useState(true);
 
   return (
     <BirdContext.Provider
       value={{
+        showTodaysFavorites,
+        setShowTodaysFavorites,
         showImageFilters,
         setShowImageFilters,
         wikiQuery,
