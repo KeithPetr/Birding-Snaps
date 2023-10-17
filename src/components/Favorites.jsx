@@ -21,7 +21,7 @@ export default function Favorites() {
       return (
         <div
           key={index}
-          className="w-24 h-24 sm:w-32 sm:h-28 md:w-48 md:h-40
+          className="w-20 h-20 sm:w-32 sm:h-28 md:w-48 md:h-40
           border hover:border-blue-500 hover:border-4 cursor-pointer"
         >
           <img
