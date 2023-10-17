@@ -190,7 +190,7 @@ export default function SearchModal() {
       )}
 
       <div
-        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[200px] ${hiddenVal}`}
+        className={`w-11/12 mb-2 px-4 bg-blue-200 z-30 absolute inset-1/2 transform -translate-x-1/2 -translate-y-[200px] ${hiddenVal} max-w-[500px]`}
       >
         <div className="flex justify-end pr-1">
           <div
@@ -225,11 +225,11 @@ export default function SearchModal() {
               return (
                 <div
                   key={index}
-                  className="flex items-center bg-blue-800 hover-bg-blue-500 px-2 py-2 cursor-pointer border-b"
+                  className="text-outline flex items-center bg-blue-400 hover:bg-blue-700 px-2 py-2 cursor-pointer border-b"
                   onClick={() => enterSearchTerms(bird)}
                 >
-                  <img className="w-24 h-20" src={selectedBirdImage[bird]} />
-                  <div className="ml-4">{bird}</div>
+                  <img className="w-24 h-20 md:w-32 md:h-28" src={selectedBirdImage[bird]} />
+                  <div className="ml-4 text-white text-lg text-xl md:text-2xl">{bird}</div>
                 </div>
               );
             })}

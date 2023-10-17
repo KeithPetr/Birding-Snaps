@@ -41,21 +41,22 @@ export default function LetterResults() {
 
   return (
     <>
-      <h1 className="text-6xl text-center my-2 text-blue-100">{firstLetter}</h1>
+      <h1 className="text-outline text-6xl text-center my-2 text-blue-100">{firstLetter}</h1>
 
-      <div>
+      <div className="max-w[1160px] flex flex-col items-center">
         {entries.map(([key, value], index) => (
           <div
             key={index}
-            className="flex text-center items-center bg-blue-800 hover:bg-blue-500 px-2 py-2 mb-2 mx-2 cursor-pointer"
+            className="flex justify-between text-center items-center my-4 pr-4 w-9/12 min-w-[200px]
+            max-w-[450px] cursor-pointer rounded border-2 text-white hover:border-blue-200 hover:text-blue-200"
             onClick={() => {
               setGetLetterResults(false);
               searchImagesByName(key);
               setSelectedBirdName(key);
             }}
           >
-            <img className="w-24 h-20" src={value} />
-            <div className="ml-2">{key}</div>
+            <img className="w-24 h-20 sm:w-36 sm:h-28 md:w-40 md:h-36 rounded" src={value} />
+            <div className="text-outline text-md sm:text-lg md:text-2xl ml-2">{key}</div>
           </div>
         ))}
       </div>

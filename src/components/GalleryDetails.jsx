@@ -24,24 +24,24 @@ export default function GalleryDetails({ enter }) {
 
   return (
     isLoading ? '' :
-    <div className="p-4 flex flex-col items-center">
-      <h1 className="text-blue-400 font-bold text-2xl text-center">
+    <div className="p-4 flex flex-col items-center max-w-[600px]">
+      <h1 className="text-outline text-blue-100 font-bold text-2xl sm:text-3xl text-center">
         {selectedBirdName ? selectedBirdName : "Today's Favorites"}
       </h1>
-      <div className="aspect-w-16 aspect-h-9 max-w-md mt-2 border-gray-100 border-2 shadow-md shadow-gray-400">
+      <div className="w-9/12 md:w-11/12 h-30 max-w-md mt-2 border-gray-100 border-2 shadow-md shadow-gray-400 overflow-y-auto">
         {displayBirdDetails ? (
-          <img src={imageUrls[0]?.url} alt={selectedBirdName} />
+          <img className="w-full h-full" src={imageUrls[0]?.url} alt={selectedBirdName} />
         ) : (
           <CarouselDefault enter={enter} />
         )}
       </div>
-      <p className="mt-4 text-blue-100 text-sm text-center">
+      <p className="text-outline mt-4 text-gray-100 text-sm sm:text-lg text-center">
         {displayBirdDetails ? (
           <>
             {showFullIntro ? birdIntro : truncateText(birdIntro, characterLimit)}
             {birdIntro.length > characterLimit && (
               <button
-                className="text-blue-400 underline cursor-pointer ml-1"
+                className="text-outline text-blue-400 underline cursor-pointer ml-1"
                 onClick={toggleIntro}
               >
                 {showFullIntro ? "Read Less" : "Read More"}

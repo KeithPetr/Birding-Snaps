@@ -14,9 +14,9 @@ export default function Header() {
   const { setShowLoginModal, user, setShowFavorites } = value;
 
   return (
-    <div className="flex h-24 justify-between items-center px-4 py-4 border-b bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-900 via-blue-500 to-blue-100">
+    <div className="flex h-24 justify-between items-center px-4 py-4 border-b bg-blue-500">
       <div className="flex items-center">
-        <h1 className="text-xl text-blue-100 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] mr-2">
+        <h1 className="text-xl sm:text-2xl md:text-4xl text-blue-100 text-outline mr-2">
           birdingsnaps
         </h1>
         <img
