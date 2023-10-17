@@ -21,7 +21,8 @@ export default function Favorites() {
       return (
         <div
           key={index}
-          className="w-24 h-24 border hover:border-blue-500 hover:border-4 cursor-pointer"
+          className="w-24 h-24 sm:w-32 sm:h-28 md:w-48 md:h-40
+          border hover:border-blue-500 hover:border-4 cursor-pointer"
         >
           <img
             className="h-full w-full"
@@ -55,11 +56,11 @@ export default function Favorites() {
   return (
     <>
       {showBirdGallery && <ZoomedImages />}
-      <h1 className="text-blue-400 font-bold text-2xl text-center mt-2">
+      <h1 className="text-outline text-blue-100 font-bold text-2xl md:text-4xl text-center mt-4">
         Favorites
       </h1>
       <div className="flex flex-col items-center mt-4">
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2 max-w-[900px] p-4">
           {photoElements}
         </div>
         <div className="mt-4">
@@ -67,7 +68,7 @@ export default function Favorites() {
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`mr-1 text-white px-1 ${
+            className={`mr-1 text-white px-1 md:text-xl ${
               currentPage === index + 1 ? "bg-blue-500 text-white" : ""
             }`}
           >

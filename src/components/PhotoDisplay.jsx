@@ -55,7 +55,7 @@ export default function PhotoDisplay() {
     return (
       <div
         key={index}
-        className="w-24 h-24 border hover:border-blue-500 hover:border-4 cursor-pointer"
+        className="w-20 h-16 sm:w-28 sm:h-24 cursor-pointer border hover:border-blue-500 hover:border-4"
       >
         <img
           className="h-full w-full"
@@ -77,11 +77,11 @@ export default function PhotoDisplay() {
   }
 
   return isLoading ? (
-    <div className="flex flex-col items-center justify-center h-full">
+    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <ReactLoading type="spokes" height={100} width={100} />
     </div>
   ) : (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center max-w-[400px] md:mx-auto p-2">
       <div className=" flex flex-wrap justify-center gap-2">
         {photoElements}
       </div>
@@ -90,8 +90,8 @@ export default function PhotoDisplay() {
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`mr-1 text-white px-1 ${
-              currentPage === index + 1 ? "bg-blue-500 text-white" : ""
+            className={`mr-1 text-white px-1 md:text-xl ${
+              currentPage === index + 1 ? "bg-blue-500" : ""
             }`}
           >
             {index + 1}

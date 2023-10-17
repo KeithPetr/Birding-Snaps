@@ -1,13 +1,19 @@
-import { useContext, useEffect, useState } from 'react';
-import LetterBox from './LetterBox';
+import { useContext, useEffect, useState } from "react";
+import LetterBox from "./LetterBox";
 import { Button } from "@material-tailwind/react";
-import { BirdContext } from '../BirdContext';
-import { listAll, ref, getStorage } from 'firebase/storage';
-import {app} from "../../firebase.config.js";
+import { BirdContext } from "../BirdContext";
+import { listAll, ref, getStorage } from "firebase/storage";
+import { app } from "../../firebase.config.js";
 
 export default function Sidebar() {
   const value = useContext(BirdContext);
-  const { setIsModalVisible, user, showFavorites, setShowFavorites, setGetLetterResults } = value;
+  const {
+    setIsModalVisible,
+    user,
+    showFavorites,
+    setShowFavorites,
+    setGetLetterResults,
+  } = value;
   const [filteredLetters, setFilteredLetters] = useState([]); // State to store filtered letters
 
   // Initialize Firebase storage
@@ -19,11 +25,17 @@ export default function Sidebar() {
       const storageRef = ref(storage, "");
       try {
         const result = await listAll(storageRef);
-        const birdFolderNames = result.prefixes.map((birdFolder) => birdFolder.name);     
+        const birdFolderNames = result.prefixes.map(
+          (birdFolder) => birdFolder.name
+        );
 
         // Extract unique starting letters from bird folder names
-        const uniqueStartingLetters = [...new Set(birdFolderNames.map((name) => name.charAt(0).toUpperCase()))];
-       
+        const uniqueStartingLetters = [
+          ...new Set(
+            birdFolderNames.map((name) => name.charAt(0).toUpperCase())
+          ),
+        ];
+
         // Update the filtered letters state with letters that have matching bird folders
         setFilteredLetters(uniqueStartingLetters);
       } catch (error) {
@@ -34,7 +46,9 @@ export default function Sidebar() {
     fetchBirdFolders();
   }, [storage]);
 
-  const letterBoxes = filteredLetters.map((letter) => <LetterBox key={letter} letter={letter} />);
+  const letterBoxes = filteredLetters.map((letter) => (
+    <LetterBox key={letter} letter={letter} />
+  ));
 
   const handleSearchClick = () => {
     setIsModalVisible((prev) => !prev);
@@ -46,12 +60,28 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="bg-blue-600 w-4/12 flex flex-col items-center pt-4 pb-4">
-      <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2" onClick={handleSearchClick}>Search</Button>
-      {user && <Button className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2" onClick={toggleFavorites}>Favorites</Button>}
-      <div className="flex flex-wrap justify-center mt-4 gap-x-2 gap-y-2">
-        {letterBoxes}
+    <>
+      <div className="flex flex-col items-center py-4 px-1 border-r w-6/12 max-w-[150px] bg-black-opacity-30">
+        <Button
+          className="bg-blue-400 text-gray-100 border-2 border-blue-200 w-11/12 p-2"
+          onClick={handleSearchClick}
+        >
+          Search
+        </Button>
+        {user && (
+          <Button
+            className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2"
+            onClick={toggleFavorites}
+          >
+            Favorites
+          </Button>
+        )}
+        <div 
+        className="flex flex-wrap justify-center max-w-[200px] mt-4 gap-x-2 gap-y-2 rounded"
+        >
+          {letterBoxes}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

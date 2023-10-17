@@ -8,12 +8,10 @@ import PhotoDisplay from "./PhotoDisplay";
 import LetterResults from "./LetterResults";
 import Favorites from "./Favorites";
 
-
 export default function Gallery({ enter }) {
   const value = useContext(BirdContext);
   const { setImageFavorites, user, getLetterResults, showFavorites } = value;
   const userUid = user ? user.uid : null;
-
 
   useEffect(() => {
     // Check if userUid is not null before using it in the ref
@@ -29,11 +27,15 @@ export default function Gallery({ enter }) {
   }, [userUid, setImageFavorites]);
 
   return (
-    <div className="flex flex-col bg-gray-900 w-3/4 pb-4">
-        {getLetterResults && <LetterResults />}
-        {showFavorites && user && <Favorites /> }
-         {!getLetterResults && !showFavorites && <GalleryDetails enter={enter} /> } 
-         {!getLetterResults && !showFavorites && <PhotoDisplay />} 
+    <div className="relative flex flex-col w-full pb-4 bg-black-opacity-30">
+      {getLetterResults && <LetterResults />}
+      {showFavorites && user && <Favorites />}
+      <div className="flex flex-col items-center justify-center md:flex md:flex-row md:mx-4 md:items-center md:my-auto">
+        {!getLetterResults && !showFavorites && (
+          <GalleryDetails enter={enter} />
+        )}
+        {!getLetterResults && !showFavorites && <PhotoDisplay />}
+      </div>
     </div>
   );
 }

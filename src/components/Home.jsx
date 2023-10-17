@@ -14,13 +14,13 @@ export default function Home({ setEnter, enter }) {
   const { showBirdGallery, showLoginModal, showImageFilters } = value;
 
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col h-screen max-w-[1160px] min-[1160px] mx-auto ">
       <Header setEnter={setEnter} />
       {showLoginModal && <LoginModal />}
       {showBirdGallery && <ZoomedImages />}
       {showImageFilters && <ImageEffects />}
       <>
-        <div className="flex flex-grow">
+        <div className="flex flex-grow ">
           <Sidebar />
           <Gallery enter={enter} />
         </div>
