@@ -14,7 +14,7 @@ export default function Home({ setEnter, enter }) {
   const { showBirdGallery, showLoginModal, showImageFilters } = value;
 
   return (
-    <div className="relative flex flex-col h-screen max-w-[1160px] min-[1160px] mx-auto ">
+    <div className="relative flex flex-col h-screen max-w-[1160px] min-[1160px] mx-auto overflow-y-auto ">
       <Header setEnter={setEnter} />
       {showLoginModal && <LoginModal />}
       {showBirdGallery && <ZoomedImages />}
