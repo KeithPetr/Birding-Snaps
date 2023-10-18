@@ -112,7 +112,8 @@ export default function ImageFilter() {
   return (
     <>
       <div className="fixed inset-0 bg-gray-900 opacity-50 z-20"></div>
-      <div className="w-11/12 z-30 flex flex-col items-center absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <div className="w-11/12 z-30 flex flex-col items-center max-w-[650px]
+      absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
         <canvas
           ref={canvasRef}
           className="w-full max-w-[900px] border"
@@ -192,13 +193,13 @@ export default function ImageFilter() {
           </div>
         )}
         <Button
-          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2"
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 max-w-[200px]"
           onClick={resetFilters}
         >
           Reset
         </Button>
         <Button
-          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2"
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2 max-w-[200px]"
           onClick={closeImageEffects}
         >
           Close

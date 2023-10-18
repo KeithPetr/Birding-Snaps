@@ -1,13 +1,11 @@
 import { BirdContext } from "../BirdContext";
 import { useContext, useState, useEffect } from "react";
-import ZoomedImages from "./ZoomedImages";
 
 export default function Favorites() {
   const value = useContext(BirdContext);
   const {
     imageFavorites,
     setShowBirdGallery,
-    showBirdGallery,
     setClickedImageUrl,
   } = value;
   const itemsPerPage = 12; // Number of items to show per page
@@ -21,7 +19,7 @@ export default function Favorites() {
       return (
         <div
           key={index}
-          className="w-20 h-20 sm:w-32 sm:h-28 md:w-48 md:h-40
+          className="w-20 h- sm:w-32 sm:h-28 md:w-48 md:h-40
           border hover:border-blue-500 hover:border-4 cursor-pointer"
         >
           <img
@@ -55,7 +53,6 @@ export default function Favorites() {
 
   return (
     <>
-      {showBirdGallery && <ZoomedImages />}
       <h1 className="text-outline text-blue-100 font-bold text-2xl md:text-4xl text-center mt-4">
         Favorites
       </h1>

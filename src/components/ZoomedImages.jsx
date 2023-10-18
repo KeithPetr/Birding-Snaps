@@ -183,7 +183,7 @@ export default function ZoomedImages() {
       ></div>
 
       <div
-        className={`w-11/12 z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 max-w-[800px]`}
+        className={`w-11/12 z-30 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 max-w-[650px]`}
       >
         <div className="border relative">
           {isLoading ? (

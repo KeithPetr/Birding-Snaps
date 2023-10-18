@@ -6,16 +6,26 @@ import { BirdContext } from "../BirdContext";
 import { auth } from "../../firebase.config";
 
 export default function Header() {
+  const value = useContext(BirdContext);
+  const { setShowLoginModal, user, setShowFavorites, setShowTodaysFavorites,setGetLetterResults } = value;
+
   function signOut() {
     setShowFavorites(false)
     auth.signOut();
   }
-  const value = useContext(BirdContext);
-  const { setShowLoginModal, user, setShowFavorites } = value;
+  
+  function returnHome() {
+    setShowTodaysFavorites(true)
+    setShowFavorites(false)
+    setGetLetterResults(false)
+  }
 
   return (
     <div className="flex h-24 justify-between items-center px-4 py-4 border-b bg-blue-500">
-      <div className="flex items-center">
+      <div 
+      className="flex items-center cursor-pointer"
+      onClick={returnHome}
+      >
         <h1 className="text-xl sm:text-2xl md:text-4xl text-blue-100 text-outline mr-2">
           birdingsnaps
         </h1>
@@ -27,7 +37,7 @@ export default function Header() {
       </div>
       <div>
         {user ? <Button
-          className="bg-blue-300 text-gray-50 border-2 border-blue-100 p-2 cursor-pointer"
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 p-2 cursor-pointer md:text-sm"
           onClick={signOut}
         >
           Sign Out
