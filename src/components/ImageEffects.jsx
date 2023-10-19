@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { BirdContext } from "../BirdContext";
 import { Button } from "@material-tailwind/react";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 export default function ImageEffects() {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -26,8 +25,6 @@ export default function ImageEffects() {
   } = value;
   const src = imageFavorites[favCurrentIndex];
 
-  const storage = getStorage();
-
   useEffect(() => {
     loadImage(src);
   }, [src]);
@@ -39,21 +36,13 @@ export default function ImageEffects() {
   }, [brightness, contrast, grayscale, saturation]);
 
   const loadImage = (src) => {
-    getDownloadURL(ref(storage, src))
-      .then((url) => {
-        console.log(url)
-        const image = new Image();
-        image.src = url;
-        image.onload = () => {
-          setImageLoaded(true);
-          imageRef.current = image;
-          drawImage(); // Call drawImage when the image is loaded
-        };
-      })
-      .catch((error) => {
-        console.log("Error getting image: ", error);
-      });
-  }
+    const image = new Image();
+    image.src = src;
+    image.onload = () => {
+      setImageLoaded(true);
+      imageRef.current = image;
+    };
+  };
 
   const drawImage = () => {
     const ctx = canvasRef.current.getContext("2d");
@@ -119,18 +108,6 @@ export default function ImageEffects() {
     setShowBirdGallery(true);
     setShowImageFilters(false);
   }
-
-  function saveCanvasImage() {
-    const canvas = canvasRef.current;
-    const link = document.createElement('a');
-    link.download = 'filtered_image.png';
-  
-    canvas.toBlob(function (blob) {
-      link.href = URL.createObjectURL(blob);
-      link.click();
-    });
-  }
-  
 
   return (
     <>
@@ -228,12 +205,6 @@ export default function ImageEffects() {
           onClick={closeImageEffects}
         >
           Close
-        </Button>
-        <Button
-          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2 max-w-[200px]"
-          onClick={saveCanvasImage}
-        >
-          Save Image
         </Button>
       </div>
     </>
