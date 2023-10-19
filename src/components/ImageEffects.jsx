@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { BirdContext } from "../BirdContext";
 import { Button } from "@material-tailwind/react";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-export default function ImageFilter() {
+export default function ImageEffects() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [brightness, setBrightness] = useState(100);
   const [contrast, setContrast] = useState(100);
@@ -25,6 +26,8 @@ export default function ImageFilter() {
   } = value;
   const src = imageFavorites[favCurrentIndex];
 
+  const storage = getStorage();
+
   useEffect(() => {
     loadImage(src);
   }, [src]);
@@ -36,13 +39,21 @@ export default function ImageFilter() {
   }, [brightness, contrast, grayscale, saturation]);
 
   const loadImage = (src) => {
-    const image = new Image();
-    image.src = src;
-    image.onload = () => {
-      setImageLoaded(true);
-      imageRef.current = image;
-    };
-  };
+    getDownloadURL(ref(storage, src))
+      .then((url) => {
+        console.log(url)
+        const image = new Image();
+        image.src = url;
+        image.onload = () => {
+          setImageLoaded(true);
+          imageRef.current = image;
+          drawImage(); // Call drawImage when the image is loaded
+        };
+      })
+      .catch((error) => {
+        console.log("Error getting image: ", error);
+      });
+  }
 
   const drawImage = () => {
     const ctx = canvasRef.current.getContext("2d");
@@ -109,11 +120,25 @@ export default function ImageFilter() {
     setShowImageFilters(false);
   }
 
+  function saveCanvasImage() {
+    const canvas = canvasRef.current;
+    const link = document.createElement('a');
+    link.download = 'filtered_image.png';
+  
+    canvas.toBlob(function (blob) {
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    });
+  }
+  
+
   return (
     <>
       <div className="fixed inset-0 bg-gray-900 opacity-50 z-20"></div>
-      <div className="w-11/12 z-30 flex flex-col items-center max-w-[650px]
-      absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="w-11/12 z-30 flex flex-col items-center max-w-[650px]
+      absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
+      >
         <canvas
           ref={canvasRef}
           className="w-full max-w-[900px] border"
@@ -138,7 +163,7 @@ export default function ImageFilter() {
             <label className="select-none">
               Brightness:
               <input
-              className="mx-2"
+                className="mx-2"
                 type="range"
                 name="brightness"
                 min="0"
@@ -152,7 +177,7 @@ export default function ImageFilter() {
             <label className="select-none">
               Contrast:
               <input
-               className="mx-2"
+                className="mx-2"
                 type="range"
                 name="contrast"
                 min="0"
@@ -166,7 +191,7 @@ export default function ImageFilter() {
             <label className="select-none">
               Grayscale:
               <input
-               className="mx-2"
+                className="mx-2"
                 type="range"
                 name="grayscale"
                 min="0"
@@ -180,7 +205,7 @@ export default function ImageFilter() {
             <label className="select-none">
               Saturation:
               <input
-               className="mx-2"
+                className="mx-2"
                 type="range"
                 name="saturation"
                 min="0"
@@ -203,6 +228,12 @@ export default function ImageFilter() {
           onClick={closeImageEffects}
         >
           Close
+        </Button>
+        <Button
+          className="bg-blue-300 text-gray-50 border-2 border-blue-100 w-11/12 p-2 mt-2 max-w-[200px]"
+          onClick={saveCanvasImage}
+        >
+          Save Image
         </Button>
       </div>
     </>
