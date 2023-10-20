@@ -73,6 +73,8 @@ export default function Favorites() {
           </button>
         ))}
         </div>
+        <p className="text-white text-center mt-4">
+          {`Saving edited images is limited to desktop version for now. After editing an image, right click and select "Save image as..."`}</p>
       </div>
     </>
   );

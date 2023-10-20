@@ -116,6 +116,7 @@ export default function ImageEffects() {
         className="w-11/12 z-30 flex flex-col items-center max-w-[650px]
       absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
       >
+        <h1 className="text-white text-outline text-center md:text-lg">Hold down left click to compare changes with original</h1>
         <canvas
           ref={canvasRef}
           className="w-full max-w-[900px] border"
@@ -136,7 +137,7 @@ export default function ImageEffects() {
         />
 
         {imageLoaded && (
-          <div className="my-4 text-gray-100">
+          <div className="my-4 text-white bg-gray-800 p-2">
             <label className="select-none">
               Brightness:
               <input

@@ -201,7 +201,7 @@ export default function ZoomedImages() {
           )}
 
           <div
-            className="absolute text-xl bottom-2 right-2 flex items-center gap-2 text-red-900 cursor-pointer"
+            className="absolute text-xl bottom-2 right-2 flex items-center gap-2 text-red-100 text-outline cursor-pointer"
             onClick={removeFavorite}
           >
             {showFavorites ? (

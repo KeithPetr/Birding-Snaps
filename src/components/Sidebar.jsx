@@ -10,7 +10,6 @@ export default function Sidebar() {
   const {
     setIsModalVisible,
     user,
-    showFavorites,
     setShowFavorites,
     setGetLetterResults,
     setShowTodaysFavorites,
@@ -56,7 +55,7 @@ export default function Sidebar() {
   };
 
   const toggleFavorites = () => {
-    setShowFavorites(!showFavorites);
+    setShowFavorites(true);
     setGetLetterResults(false);
     setShowTodaysFavorites(false);
   };
