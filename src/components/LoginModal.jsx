@@ -38,7 +38,7 @@ export default function LoginModal() {
       >
         <div className="relative flex justify-center w-full h-full">
           <div
-            className="text-red-900 cursor-pointer font-extrabold text-2xl top-0 right-2 absolute"
+            className="text-red-300 cursor-pointer font-extrabold text-2xl top-0 right-2 absolute"
             onClick={closeModal}
           >
             X

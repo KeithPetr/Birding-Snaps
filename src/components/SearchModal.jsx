@@ -202,7 +202,7 @@ export default function SearchModal() {
       >
         <div className="flex justify-end pr-1">
           <div
-            className="text-red-900 w-4 cursor-pointer font-extrabold text-2xl"
+            className="text-red-300 w-4 cursor-pointer font-extrabold text-2xl text-outline"
             onClick={closePopUp}
           >
             X
