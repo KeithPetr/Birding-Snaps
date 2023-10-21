@@ -9,6 +9,7 @@ export { BirdContext };
 
 export default function BirdProvider({ children }) {
   const [user] = useAuthState(auth);
+  const [birdData, setBirdData] = useState(null)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerms, setSearchTerms] = useState("");
   const [filteredBirds, setFilteredBirds] = useState([]);
@@ -36,6 +37,8 @@ export default function BirdProvider({ children }) {
   return (
     <BirdContext.Provider
       value={{
+        birdData,
+        setBirdData,
         showTodaysFavorites,
         setShowTodaysFavorites,
         showImageFilters,

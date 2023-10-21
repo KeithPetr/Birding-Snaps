@@ -8,6 +8,7 @@ import { useContext } from "react";
 import ZoomedImages from "./ZoomedImages";
 import LoginModal from "./LoginModal";
 import ImageEffects from "./ImageEffects";
+import Footer from "./Footer";
 
 export default function Home() {
   const value = useContext(BirdContext);
@@ -26,6 +27,7 @@ export default function Home() {
         </div>
         <SearchModal />
       </>
+      <Footer />
     </div>
   );
 }
