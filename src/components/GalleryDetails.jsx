@@ -10,6 +10,7 @@ export default function GalleryDetails() {
     selectedBirdName,
     birdIntro,
     isLoading,
+    birdData,
   } = value;
 
   const characterLimit = 100;
@@ -31,7 +32,7 @@ export default function GalleryDetails() {
     ""
   ) : (
     <div className="p-4 flex flex-col items-center max-w-[600px]">
-      <h1 className="text-outline text-blue-100 font-bold text-2xl sm:text-3xl text-center">
+      <h1 className="text-outline text-blue-100 font-bold text-2xl sm:text-3xl text-center cursor-pointer">
         {selectedBirdName}
       </h1>
       <div className="w-9/12 md:w-11/12 h-30 max-w-md mt-2 border-gray-100 border-2 shadow-md shadow-gray-400 overflow-y-auto">
@@ -57,6 +58,11 @@ export default function GalleryDetails() {
             )}
           </>
         )}
+        <a href={birdData.content_urls.mobile.page} target="_blank" rel="noreferrer">
+          <p className="text-outline mt-4 text-blue-200 underline md:text-lg">
+            Link to Wikipedia article
+          </p>
+        </a>
       </p>
     </div>
   );

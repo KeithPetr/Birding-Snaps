@@ -19,7 +19,7 @@ export default function Favorites() {
       return (
         <div
           key={index}
-          className="w-20 h- sm:w-32 sm:h-28 md:w-48 md:h-40
+          className="w-20 h-16 h- sm:w-32 sm:h-28 md:w-48 md:h-40
           border hover:border-blue-500 hover:border-4 cursor-pointer"
         >
           <img
@@ -73,8 +73,9 @@ export default function Favorites() {
           </button>
         ))}
         </div>
-        <p className="text-white text-center mt-4">
-          {`Saving edited images is limited to desktop version for now. After editing an image, right click and select "Save image as..."`}</p>
+        <p className="text-white text-center mt-4 mx-4 md:text-lg max-w-[600px]">
+          {`Saving edited images is limited to desktop version for now. 
+          After editing an image, right click and select "Save image as..."`}</p>
       </div>
     </>
   );

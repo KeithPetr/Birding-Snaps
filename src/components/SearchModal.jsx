@@ -28,6 +28,7 @@ export default function SearchModal() {
     setBirdIntro,
     setShowFavorites,
     setIsLoading,
+    setBirdData,
   } = value;
 
   const storage = getStorage(app);
@@ -73,10 +74,12 @@ export default function SearchModal() {
     const joinTest = splitTest.join("_");
     const wikiQuery = joinTest.charAt(0).toUpperCase() + joinTest.slice(1);
     setWikiQuery(wikiQuery);
-    return query
+    const capitalizedQuery = query
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
+      console.log(capitalizedQuery);
+      return capitalizedQuery
   }
 
   // Get information from Wikipedia ---------------------------
@@ -90,6 +93,8 @@ export default function SearchModal() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log(data)
+        setBirdData(data)
         setBirdIntro(data.extract);
       } catch (error) {
         console.log("Error fetching data: ", error);
