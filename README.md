@@ -32,12 +32,15 @@ and make edits to adjust the photos to their liking.
 There were 4 main requirements for this project. The first one was to find a way to store my photos so that they could be accessed and searchable. I wanted
 to include a search input field and letters to search for birds starting with the same letter. Using Firebase Storage I was able to do this. I used the 
 Firebase Storage methods to search through the different folders that I named after each bird. I was then able to use another method to grab the download
-url for each available image stored in the folder that was selected by the user. 
+url for each available image stored in the folder that was selected by the user.
+
 The second requirement was that I wanted the user to be able to save favorites. I included an icon that could be clicked on each image to save it to a
 favorites section. This section was only accessible if the user signed in via their Google account. What this allowed me to do was use the user id from the Google
 sign in to create a unique folder name. I then saved these images in a Firebase realtime database so they could be removed and saved almost instantly.
+
 The third requirement I had was allowing the user to edit favorites. I used HTML canvas to load an image and offered the user the abiltiy to change contrast,
 brightness, grayscale, and saturation. Currently, the user can only save these edited images by right clicking when viewing the website on a desktop.
+
 The fourth requirement was displaying the images in a way that showed of their best quality and allowed the user to navigate through them easily. I did this by
 creating a component that would appear when an image was clicked on. This component shows the image in a larger size, grays out and disables the site behind it, 
 and it offers arrow buttons to navigate through the collection. 
