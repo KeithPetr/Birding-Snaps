@@ -16,7 +16,7 @@ export default function TodaysFavorites() {
           Welcome, {nameArray[0]}!
         </h1>
       ) : null}
-      <p className="text-teal-100 text-outline text-xl md:text-2xl text-center mb-8">Recently Added: Black-and-white Warbler</p>
+      <p className="text-teal-100 text-outline text-xl md:text-2xl text-center mb-8">Recently Added: Turkey Vulture</p>
       <div>
         <h1 className="text-outline text-blue-100 font-bold text-2xl sm:text-3xl text-center">
           Today&apos;s Favorites

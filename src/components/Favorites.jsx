@@ -8,7 +8,7 @@ export default function Favorites() {
     setShowBirdGallery,
     setClickedImageUrl,
   } = value;
-  const itemsPerPage = 12; // Number of items to show per page
+  const itemsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;

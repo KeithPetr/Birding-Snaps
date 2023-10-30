@@ -11,9 +11,6 @@ export default withMT({
     ],
     theme: {
       extend: {
-        backgroundImage: {
-          'mountains': "url('./src/photos/mountains.jpg')",
-        },
         backgroundColor: {
           'black-opacity-30': 'rgba(0, 0, 0, 0.5)',
         },
