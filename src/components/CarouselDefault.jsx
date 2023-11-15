@@ -1,8 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Carousel } from "@material-tailwind/react";
-import Grosbeak from "../assets/grosbeak.jpg";
-import Warbler from "../assets/yellow-rumped-warbler.jpg";
-import Veery from "../assets/veery.jpg";
 import Blackbird from "../photos/Blackbird.jpg";
 import Bluebird from "../photos/Bluebird.jpg";
 import Cowbird from "../photos/Cowbird.jpg";
@@ -10,11 +7,8 @@ import WinterWren from "../photos/WinterWren.jpg";
 import YellowWarbler from "../photos/YellowWarbler.jpg";
 
 
-export default function CarouselDefault({enter}) {
-  const landingImages = [Grosbeak, Warbler, Veery]
+export default function CarouselDefault() {
   const todaysImages = [Bluebird, Blackbird, Cowbird, WinterWren, YellowWarbler]
-  const EmptyComponent = () => null;
-  const display = enter ? todaysImages : landingImages
 
   return (
     <Carousel
@@ -22,8 +16,6 @@ export default function CarouselDefault({enter}) {
       autoplay={true}
       autoplayDelay={3000}
       loop={true}
-      prevArrow={() => <EmptyComponent />} // Hide previous arrow
-      nextArrow={() => <EmptyComponent />} // Hide next arrow
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-4 left-2/4 z-10 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (
@@ -38,7 +30,7 @@ export default function CarouselDefault({enter}) {
         </div>
       )}
     >
-      {display.map((image, index) => {
+      {todaysImages.map((image, index) => {
         return (
           <img
             key={index}
